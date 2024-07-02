@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://3648lxynv4wb"]
+
+[ext_resource type="Texture2D" uid="uid://cbi7kluqky1mj" path="res://sprites/gold.png" id="1_158fb"]
+
+[node name="Gold" type="Sprite3D"]
+alpha_cut = 1
+alpha_scissor_threshold = 0.134
+texture_filter = 0
+texture = ExtResource("1_158fb")

@@ -1,0 +1,1735 @@
+[gd_scene load_steps=42 format=3 uid="uid://dgtilhxu443bf"]
+
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_bnyea"]
+[ext_resource type="Texture2D" uid="uid://cysfd60opdwam" path="res://sprites/mini_grid2.png" id="2_s7vf0"]
+[ext_resource type="Texture2D" uid="uid://y62qsukeo15g" path="res://sprites/white_checker.png" id="2_wyqpy"]
+[ext_resource type="Texture2D" uid="uid://jbmgrffx674v" path="res://sprites/gold_checker.png" id="3_6p8ha"]
+[ext_resource type="Texture2D" uid="uid://c3hxh5kgwjvh0" path="res://sprites/miniatures/blue_pawn.png" id="3_64q2y"]
+[ext_resource type="Script" path="res://scripts/tile.gd" id="3_h06su"]
+[ext_resource type="Texture2D" uid="uid://ctxy7q4ne7dmn" path="res://sprites/side_board.png" id="3_wrhq7"]
+[ext_resource type="FontFile" uid="uid://dc6nwv5ifospw" path="res://Px437_CL_Stingray_8x19.ttf" id="5_2r282"]
+[ext_resource type="Script" path="res://scripts/button.gd" id="5_5lysr"]
+[ext_resource type="Texture2D" uid="uid://ct4m1hk2vlevn" path="res://sprites/betting_green.png" id="8_ifavb"]
+[ext_resource type="Texture2D" uid="uid://p11goviq211x" path="res://sprites/commence_button.png" id="9_iu0hr"]
+[ext_resource type="FontFile" uid="uid://y8v8ttnxc0ms" path="res://alagard.ttf" id="10_m0r2d"]
+[ext_resource type="Texture2D" uid="uid://dqotrwt2qai7j" path="res://sprites/shop_table.png" id="12_fqud3"]
+[ext_resource type="Texture2D" uid="uid://cmry23fl38ktn" path="res://sprites/commence_outline1.png" id="12_llrtw"]
+[ext_resource type="Texture2D" uid="uid://tf4avm7py5sm" path="res://sprites/next_round_button.png" id="14_pujt3"]
+[ext_resource type="Shader" path="res://scripts/shaders/Benji_Screen_Space_Camera_Ripple .gdshader" id="15_euld0"]
+
+[sub_resource type="Environment" id="Environment_1o1hx"]
+background_mode = 1
+background_color = Color(0.333333, 0, 0, 1)
+reflected_light_source = 1
+tonemap_mode = 2
+fog_light_color = Color(0.243137, 0.145098, 0, 1)
+fog_light_energy = 0.78
+fog_density = 0.0
+fog_height = -689.86
+fog_height_density = 9.4316
+volumetric_fog_density = 0.4763
+adjustment_enabled = true
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_bajny"]
+viewport_path = NodePath("MeshInstance3D/SubViewport")
+
+[sub_resource type="QuadMesh" id="QuadMesh_7s7kb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8cufb"]
+transparency = 2
+alpha_scissor_threshold = 0.375
+alpha_antialiasing_mode = 0
+shading_mode = 0
+albedo_color = Color(0.486275, 0.486275, 0.486275, 1)
+albedo_texture = ExtResource("3_6p8ha")
+texture_filter = 0
+texture_repeat = false
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_21xnx"]
+size = Vector3(1, 1, 0.0358887)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k6fau"]
+transparency = 2
+alpha_scissor_threshold = 0.326
+alpha_antialiasing_mode = 0
+shading_mode = 0
+albedo_texture = ExtResource("2_wyqpy")
+texture_filter = 0
+texture_repeat = false
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s60ol"]
+transparency = 2
+alpha_scissor_threshold = 0.37
+alpha_antialiasing_mode = 0
+shading_mode = 0
+albedo_texture = ExtResource("2_wyqpy")
+texture_filter = 0
+texture_repeat = false
+
+[sub_resource type="Environment" id="Environment_s8lel"]
+background_energy_multiplier = 0.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a3apq"]
+size = Vector3(1.3, 0.37, 2.2214)
+
+[sub_resource type="Animation" id="Animation_7dja4"]
+resource_name = "pressed"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 2]
+}
+
+[sub_resource type="Animation" id="Animation_j5wlg"]
+resource_name = "released"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tx32m"]
+_data = {
+"pressed": SubResource("Animation_7dja4"),
+"released": SubResource("Animation_j5wlg")
+}
+
+[sub_resource type="Animation" id="Animation_tp3fn"]
+resource_name = "UI_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/Sideboard:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.406126, 0.406126),
+"update": 0,
+"values": [Vector3(-7.865, 1.5, -4), Vector3(-4.46, 1.5, -4)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/Minimap:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.406126, 0.406126),
+"update": 0,
+"values": [Vector3(-6, 2, -4), Vector3(-3.1, 2, -4)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("board:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.406126, 0.406126),
+"update": 0,
+"values": [Vector3(-2, 3, -89.273), Vector3(-2.00002, -2, -89.2726)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Commence:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.406126, 0.406126),
+"update": 0,
+"values": [Vector3(0, -5, 0), Vector3(0, -4, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2gmhq"]
+resource_name = "UI_out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:h_offset")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(0.63728),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D:v_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D:size")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(0.241484),
+"update": 0,
+"values": [5.4]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Camera3D:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Camera3D/Minimap:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.406126, 0.406126),
+"update": 0,
+"values": [Vector3(-3.1, 2, -4), Vector3(-6, 2, -4)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("board:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.406126, 0.406126),
+"update": 0,
+"values": [Vector3(-2.00002, -2, -89.2726), Vector3(-2, 3, -89.273)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Commence:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.406126, 0.406126),
+"update": 0,
+"values": [Vector3(0, -4, 0), Vector3(0, -5, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Camera3D/Sideboard:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.406126, 0.406126),
+"update": 0,
+"values": [Vector3(-4.46, 1.5, -4), Vector3(-7.865, 1.5, -4)]
+}
+
+[sub_resource type="Animation" id="Animation_wuars"]
+resource_name = "cam_shake"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:h_offset")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(0.63728, 0.63728, 0.63728, 0.63728, 0.63728),
+"update": 0,
+"values": [0.0, -0.1, 0.1, -0.1, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D:v_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D:size")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.4, 1.4),
+"transitions": PackedFloat32Array(0.241484, 0.0883884, 0.287175),
+"update": 0,
+"values": [5.4, 3.9, 5.4]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Camera3D:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.7, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.0349066), Vector3(0, 0, -0.0174533), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_xhe2b"]
+resource_name = "cam_impact_medium"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:h_offset")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4, 0.6, 1.2, 2),
+"transitions": PackedFloat32Array(0.5, 0.5, 0.5, 1.68179, 0.5, 0.5),
+"update": 0,
+"values": [0.0, -0.1, 0.1, -0.1, 0.045, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D:v_offset")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.2, 2.6),
+"transitions": PackedFloat32Array(0.5, 0.5, 1.46409, 0.5),
+"update": 0,
+"values": [0.0, -0.05, 0.173, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D:size")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.2, 4.8),
+"transitions": PackedFloat32Array(0.0089742, 1.07178, 0.5),
+"update": 0,
+"values": [5.39, 3.5, 5.4]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Camera3D:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5, 1.5, 2.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.139626), Vector3(0, 0, -0.0436332), Vector3(0, 0, 0.0349066), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ugwju"]
+_data = {
+"UI_in": SubResource("Animation_tp3fn"),
+"UI_out": SubResource("Animation_2gmhq"),
+"cam_impact_light": SubResource("Animation_wuars"),
+"cam_impact_medium": SubResource("Animation_xhe2b")
+}
+
+[sub_resource type="Animation" id="Animation_s0rda"]
+resource_name = "ui_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../ShopConstants/NextRound:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.0473661, 0.0473661),
+"update": 0,
+"values": [Vector3(0.49, -3.044, 0), Vector3(0.489515, -1.91899, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ysm33"]
+resource_name = "UI_out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../ShopConstants/NextRound:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.0473661, 0.0473661),
+"update": 0,
+"values": [Vector3(0.489515, -1.91899, 0), Vector3(0.49, -3.044, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vojg3"]
+_data = {
+"UI_in": SubResource("Animation_s0rda"),
+"UI_out": SubResource("Animation_ysm33")
+}
+
+[sub_resource type="QuadMesh" id="QuadMesh_2saxr"]
+size = Vector2(4, 4)
+subdivide_width = 1500
+subdivide_depth = 1500
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_447up"]
+render_priority = 0
+shader = ExtResource("15_euld0")
+shader_parameter/lighting = false
+shader_parameter/_VertexAmplitudeMult = 1.194
+shader_parameter/_VertexAmplitude = 0.055
+shader_parameter/_VertexFrequencyMult = 0.675
+shader_parameter/_VertexFrequency = 0.15
+shader_parameter/_VertexWavelengthMult = 0.835
+shader_parameter/_VertexWavelength = 1.0
+shader_parameter/_VertexPeakWidth = 1.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_worbu"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8n4wn"]
+width = 1024
+height = 1024
+in_3d_space = true
+seamless = true
+seamless_blend_skirt = 0.433
+noise = SubResource("FastNoiseLite_worbu")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a22y7"]
+shading_mode = 0
+diffuse_mode = 1
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_color = Color(0.737255, 0.443137, 0, 1)
+albedo_texture = SubResource("NoiseTexture2D_8n4wn")
+heightmap_enabled = true
+heightmap_scale = -5.335
+texture_filter = 2
+texture_repeat = false
+
+[node name="Game" type="Node3D" node_paths=PackedStringArray("hand", "deck", "baubles", "board", "graveyard", "commence")]
+script = ExtResource("1_bnyea")
+hand = NodePath("hand")
+deck = NodePath("deck")
+baubles = NodePath("baubles")
+board = NodePath("board")
+graveyard = NodePath("graveyard")
+commence = NodePath("Commence/Area3D")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 4)
+cull_mask = 7
+environment = SubResource("Environment_1o1hx")
+projection = 1
+current = true
+fov = 2.5
+size = 5.4
+
+[node name="Minimap" type="Sprite3D" parent="Camera3D"]
+transform = Transform3D(-0.96, 0, -1.44956e-07, 0, 0.96, 0, 1.44956e-07, 0, -0.96, -6, 2, -4)
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("2_s7vf0")
+
+[node name="a1" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.322189, -0.320515, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="b1" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.160219, -0.320515, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="c1" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.00177288, -0.320515, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="d1" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.160199, -0.320515, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="e1" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.319413, -0.320515, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="a2" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.322189, -0.160569, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="b2" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.160219, -0.160569, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="c2" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.00177288, -0.160569, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="d2" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.160199, -0.160569, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="e2" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.319413, -0.160569, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="a3" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.322189, -3.14321e-06, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="b3" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.160219, -3.14321e-06, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="c3" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.00177288, -3.14321e-06, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="d3" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.160199, -3.14321e-06, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="e3" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.319413, -3.14321e-06, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="a4" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.322189, 0.159973, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="b4" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.160219, 0.159973, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="c4" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.00177288, 0.159973, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="d4" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.160199, 0.159973, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="e4" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.319413, 0.159973, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="a5" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.322189, 0.319949, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="b5" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.160219, 0.319949, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="c5" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.00177288, 0.319949, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="d5" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.160199, 0.319949, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="e5" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.319413, 0.319949, 0.0229397)
+alpha_cut = 1
+alpha_scissor_threshold = 0.103
+texture_filter = 5
+texture = ExtResource("3_64q2y")
+
+[node name="Minimap2" type="Sprite3D" parent="Camera3D/Minimap"]
+transform = Transform3D(1, 0, 1.42109e-14, 0, 1, 0, -1.42109e-14, 0, 1, 0.0208335, -0.0208333, 0.0781248)
+sorting_offset = -1.0
+sorting_use_aabb_center = false
+modulate = Color(0, 0, 0, 1)
+alpha_cut = 1
+texture_filter = 5
+texture = ExtResource("2_s7vf0")
+
+[node name="Sideboard" type="Sprite3D" parent="Camera3D"]
+transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -7.865, 1.5, -4)
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.629
+texture_filter = 0
+texture = ExtResource("3_wrhq7")
+
+[node name="Budget" type="Label3D" parent="Camera3D/Sideboard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0605285, -0.0348208, 0.0228973)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.374
+alpha_hash_scale = 1.1
+texture_filter = 0
+text = "12"
+font = ExtResource("5_2r282")
+font_size = 19
+outline_size = 5
+width = 500.135
+
+[node name="a" type="Label3D" parent="Camera3D/Sideboard/Budget"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0103575, -0.002)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.374
+alpha_hash_scale = 1.1
+texture_filter = 0
+modulate = Color(0.666667, 0.333333, 0, 1)
+text = "12"
+font = ExtResource("5_2r282")
+font_size = 19
+outline_size = 5
+width = 500.135
+
+[node name="a" type="Label3D" parent="Camera3D/Sideboard/Budget/a"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00979555, -0.002)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.374
+alpha_hash_scale = 1.1
+texture_filter = 0
+modulate = Color(0.333333, 0, 0, 1)
+text = "12"
+font = ExtResource("5_2r282")
+font_size = 19
+outline_size = 5
+width = 500.135
+
+[node name="b" type="Label3D" parent="Camera3D/Sideboard/Budget"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0100811, -0.002)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.374
+alpha_hash_scale = 1.1
+texture_filter = 0
+modulate = Color(1, 0.666667, 0, 1)
+text = "12"
+font = ExtResource("5_2r282")
+font_size = 19
+outline_size = 5
+width = 500.135
+
+[node name="Turn" type="Label3D" parent="Camera3D/Sideboard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0605285, -0.644768, 0.0228973)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.374
+alpha_hash_scale = 1.1
+texture_filter = 0
+text = "12"
+font = ExtResource("5_2r282")
+font_size = 19
+outline_size = 5
+width = 500.135
+
+[node name="a" type="Label3D" parent="Camera3D/Sideboard/Turn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0103575, -0.002)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.374
+alpha_hash_scale = 1.1
+texture_filter = 0
+modulate = Color(0.666667, 0.333333, 0, 1)
+text = "12"
+font = ExtResource("5_2r282")
+font_size = 19
+outline_size = 5
+width = 500.135
+
+[node name="a" type="Label3D" parent="Camera3D/Sideboard/Turn/a"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00979555, -0.002)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.374
+alpha_hash_scale = 1.1
+texture_filter = 0
+modulate = Color(0.333333, 0, 0, 1)
+text = "12"
+font = ExtResource("5_2r282")
+font_size = 19
+outline_size = 5
+width = 500.135
+
+[node name="b" type="Label3D" parent="Camera3D/Sideboard/Turn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0100811, -0.002)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.374
+alpha_hash_scale = 1.1
+texture_filter = 0
+modulate = Color(1, 0.666667, 0, 1)
+text = "12"
+font = ExtResource("5_2r282")
+font_size = 19
+outline_size = 5
+width = 500.135
+
+[node name="Quota" type="Label3D" parent="Camera3D/Sideboard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0605285, 0.587532, 0.0228973)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.374
+alpha_hash_scale = 1.1
+texture_filter = 0
+text = "12"
+font = ExtResource("5_2r282")
+font_size = 19
+outline_size = 5
+width = 500.135
+
+[node name="a" type="Label3D" parent="Camera3D/Sideboard/Quota"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0103575, -0.002)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.374
+alpha_hash_scale = 1.1
+texture_filter = 0
+modulate = Color(0.666667, 0.333333, 0, 1)
+text = "12"
+font = ExtResource("5_2r282")
+font_size = 19
+outline_size = 5
+width = 500.135
+
+[node name="a" type="Label3D" parent="Camera3D/Sideboard/Quota/a"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00979555, -0.002)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.374
+alpha_hash_scale = 1.1
+texture_filter = 0
+modulate = Color(0.333333, 0, 0, 1)
+text = "12"
+font = ExtResource("5_2r282")
+font_size = 19
+outline_size = 5
+width = 500.135
+
+[node name="b" type="Label3D" parent="Camera3D/Sideboard/Quota"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0100811, -0.002)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.374
+alpha_hash_scale = 1.1
+texture_filter = 0
+modulate = Color(1, 0.666667, 0, 1)
+text = "12"
+font = ExtResource("5_2r282")
+font_size = 19
+outline_size = 5
+width = 500.135
+
+[node name="Sideboard2" type="Sprite3D" parent="Camera3D/Sideboard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.044, -0.044, -0.019)
+modulate = Color(0, 0, 0, 0.635294)
+double_sided = false
+alpha_scissor_threshold = 0.629
+texture_filter = 0
+texture = ExtResource("3_wrhq7")
+
+[node name="Sideboard3" type="Sprite3D" parent="Camera3D/Sideboard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.667, -0.044, -0.019)
+flip_h = true
+modulate = Color(0, 0, 0, 0.635294)
+double_sided = false
+alpha_scissor_threshold = 0.629
+texture_filter = 0
+texture = ExtResource("3_wrhq7")
+
+[node name="BG" type="Sprite3D" parent="Camera3D"]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.115, 0.047, -143.165)
+sorting_offset = -100.0
+sorting_use_aabb_center = false
+flip_h = true
+modulate = Color(0.513726, 0.258824, 0.0235294, 1)
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.785
+alpha_hash_scale = 1.22
+texture_filter = 0
+texture = SubResource("ViewportTexture_bajny")
+
+[node name="board" type="Node3D" parent="."]
+transform = Transform3D(-1, 8.74228e-08, 1.74846e-07, -8.74228e-08, -1, 7.64275e-15, 1.74846e-07, -7.64274e-15, 1, -2, 3, -89.273)
+
+[node name="a1" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, 0, 0, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/a1"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0, 0, 0)
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/a1/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/a1/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/a1/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="b1" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -0.999253, -9.53674e-07, 3.57628e-07)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_k6fau")
+
+[node name="Area3D" type="Area3D" parent="board/b1"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/b1/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/b1/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/b1/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="c1" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -1.99958, 0, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/c1"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/c1/Area3D"]
+transform = Transform3D(1, -1.51246e-22, 0, -2.48635e-22, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/c1/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/c1/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="d1" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -2.99884, 0, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_k6fau")
+
+[node name="Area3D" type="Area3D" parent="board/d1"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/d1/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/d1/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/d1/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="e1" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -3.99807, -9.53674e-07, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/e1"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/e1/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/e1/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/e1/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="a2" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -7.15256e-07, -1, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_s60ol")
+
+[node name="Area3D" type="Area3D" parent="board/a2"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/a2/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/a2/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/a2/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="b2" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -0.999253, -1, 2.38419e-07)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/b2"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/b2/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/b2/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/b2/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.0639999, 0.0639999, -0.157997)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="c2" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -1.99958, -1, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_s60ol")
+
+[node name="Area3D" type="Area3D" parent="board/c2"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/c2/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/c2/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/c2/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="d2" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -2.99884, -1, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/d2"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/d2/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/d2/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/d2/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="e2" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -3.99807, -1, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_s60ol")
+
+[node name="Area3D" type="Area3D" parent="board/e2"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/e2/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/e2/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/e2/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="a3" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, 0, -2, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/a3"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/a3/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/a3/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/a3/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="b3" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -0.999252, -2, 2.38419e-07)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_k6fau")
+
+[node name="Area3D" type="Area3D" parent="board/b3"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/b3/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/b3/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 1.69407e-21, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/b3/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="c3" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -1.99958, -2, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/c3"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/c3/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/c3/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/c3/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="d3" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -2.99884, -2, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_k6fau")
+
+[node name="Area3D" type="Area3D" parent="board/d3"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/d3/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/d3/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, -1.42109e-14, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/d3/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="e3" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -3.99807, -2, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/e3"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/e3/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/e3/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/e3/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="a4" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, 0, -3, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_s60ol")
+
+[node name="Area3D" type="Area3D" parent="board/a4"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/a4/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/a4/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/a4/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="b4" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -0.999253, -3, 2.38419e-07)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/b4"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/b4/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/b4/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/b4/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="c4" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -1.99958, -3, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_s60ol")
+
+[node name="Area3D" type="Area3D" parent="board/c4"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/c4/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/c4/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/c4/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="d4" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -2.99884, -3, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/d4"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/d4/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/d4/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/d4/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="e4" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -3.99807, -3, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_s60ol")
+
+[node name="Area3D" type="Area3D" parent="board/e4"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/e4/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/e4/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/e4/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="a5" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -8.34465e-07, -4, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/a5"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/a5/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/a5/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/a5/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="b5" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -0.999252, -4, 2.38419e-07)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_k6fau")
+
+[node name="Area3D" type="Area3D" parent="board/b5"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/b5/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/b5/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/b5/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="c5" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -1.99958, -4, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/c5"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/c5/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/c5/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/c5/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="d5" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -2.99884, -4, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_k6fau")
+
+[node name="Area3D" type="Area3D" parent="board/d5"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/d5/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/d5/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/d5/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="e5" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, -3.99807, -4, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/e5"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/e5/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="Safe" type="Label3D" parent="board/e5/Area3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -3.38813e-21, 1, 0, 0, 1.5)
+visible = false
+text = "safe_level"
+
+[node name="Sprite3D" type="Sprite3D" parent="board/e5/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="Sprite3D2" type="Sprite3D" parent="board/e5/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="Sprite3D3" type="Sprite3D" parent="board/e5/Area3D"]
+transform = Transform3D(1, 1.89364e-20, 0, 1.90338e-20, 1, 0, 0, 0, 1, 0.064, 0.064, -0.158)
+modulate = Color(0, 0, 0, 0.556863)
+texture = ExtResource("3_6p8ha")
+
+[node name="graveyard" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.98636, -3.97, 11.714)
+
+[node name="deck" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.95968, -3.91706, 11.7139)
+
+[node name="baubles" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, -2.5, 12)
+metadata/_edit_group_ = true
+
+[node name="BettingGreen" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.643, -105.009)
+sorting_offset = -100.0
+sorting_use_aabb_center = false
+flip_h = true
+modulate = Color(0.658824, 0.658824, 0.658824, 1)
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.785
+alpha_hash_scale = 1.22
+texture_filter = 0
+texture = ExtResource("8_ifavb")
+
+[node name="hand" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.2, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_s8lel")
+
+[node name="Commence" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0)
+modulate = Color(0.509804, 0.509804, 0.509804, 1)
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("9_iu0hr")
+hframes = 3
+
+[node name="Area3D" type="Area3D" parent="Commence" node_paths=PackedStringArray("sprite", "outline")]
+script = ExtResource("5_5lysr")
+sprite = NodePath("..")
+outline = NodePath("Outline")
+button_type = "commence"
+
+[node name="Outline" type="Sprite3D" parent="Commence/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0105276, 0)
+visible = false
+sorting_offset = 1.0
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("12_llrtw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Commence/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0571728, 0.990701)
+shape = SubResource("BoxShape3D_a3apq")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Commence/Area3D"]
+libraries = {
+"": SubResource("AnimationLibrary_tx32m")
+}
+speed_scale = 18.0
+
+[node name="GoldLabel" type="Label3D" parent="."]
+transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -3.784, -4.34, 0.023)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.53
+alpha_hash_scale = 0.0
+alpha_antialiasing_edge = 0.11
+texture_filter = 0
+outline_modulate = Color(0.180392, 0, 0, 1)
+text = "x00000"
+font = ExtResource("10_m0r2d")
+font_size = 19
+outline_size = 5
+
+[node name="a" type="Label3D" parent="GoldLabel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0103575, -0.002)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.53
+alpha_hash_scale = 0.0
+alpha_antialiasing_edge = 0.11
+texture_filter = 0
+modulate = Color(0.666667, 0.333333, 0, 1)
+outline_modulate = Color(0.180392, 0, 0, 1)
+text = "x00000"
+font = ExtResource("10_m0r2d")
+font_size = 19
+outline_size = 5
+
+[node name="a" type="Label3D" parent="GoldLabel/a"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00979555, -0.002)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.53
+alpha_hash_scale = 0.0
+alpha_antialiasing_edge = 0.11
+texture_filter = 0
+modulate = Color(0.333333, 0, 0, 1)
+outline_modulate = Color(0.180392, 0, 0, 1)
+text = "x00000"
+font = ExtResource("10_m0r2d")
+font_size = 19
+outline_size = 5
+
+[node name="b" type="Label3D" parent="GoldLabel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0100811, -0.002)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.53
+alpha_hash_scale = 0.0
+alpha_antialiasing_edge = 0.11
+texture_filter = 0
+modulate = Color(1, 0.666667, 0, 1)
+outline_modulate = Color(0.180392, 0, 0, 1)
+text = "x00000"
+font = ExtResource("10_m0r2d")
+font_size = 19
+outline_size = 5
+
+[node name="Shop" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="Single1" type="Node3D" parent="Shop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 0)
+
+[node name="Single2" type="Node3D" parent="Shop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0.2)
+
+[node name="Single3" type="Node3D" parent="Shop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.3)
+
+[node name="Single4" type="Node3D" parent="Shop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 0.4)
+
+[node name="Single5" type="Node3D" parent="Shop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 0.5)
+
+[node name="GoldPile" type="Node3D" parent="Shop"]
+transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -3.76, -3.52, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ugwju")
+}
+speed_scale = 4.0
+
+[node name="ShopConstants" type="Node3D" parent="."]
+transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -0.469934, -2.15777, 0)
+
+[node name="NextRound" type="Sprite3D" parent="ShopConstants"]
+transform = Transform3D(1.04167, 0, 0, 0, 1.04167, 0, 0, 0, 1.04167, 0.49, -3.044, 0)
+modulate = Color(0.509804, 0.509804, 0.509804, 1)
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("14_pujt3")
+hframes = 3
+frame = 2
+
+[node name="Area3D" type="Area3D" parent="ShopConstants/NextRound" node_paths=PackedStringArray("sprite", "outline")]
+script = ExtResource("5_5lysr")
+sprite = NodePath("../../../Commence")
+outline = NodePath("../../../Commence/Area3D/Outline")
+button_type = "next_round"
+
+[node name="Outline" type="Sprite3D" parent="ShopConstants/NextRound/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0105276, 0)
+visible = false
+sorting_offset = 1.0
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("12_llrtw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShopConstants/NextRound/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0571728, 0.990701)
+shape = SubResource("BoxShape3D_a3apq")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ShopConstants/NextRound/Area3D"]
+libraries = {
+"": SubResource("AnimationLibrary_tx32m")
+}
+speed_scale = 18.0
+
+[node name="Table1" type="Sprite3D" parent="ShopConstants"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.75114, -2.23724, -0.047)
+visible = false
+double_sided = false
+alpha_cut = 1
+texture_filter = 5
+texture = ExtResource("12_fqud3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ShopConstants"]
+root_node = NodePath("../../Shop")
+libraries = {
+"": SubResource("AnimationLibrary_vojg3")
+}
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(19.21, 0, 0, 0, 19.21, 3.35878e-06, 0, -3.35878e-06, 19.21, 84.2844, 1.1088e-06, -17.9254)
+layers = 2
+mesh = SubResource("QuadMesh_2saxr")
+surface_material_override/0 = SubResource("ShaderMaterial_447up")
+
+[node name="SubViewport" type="SubViewport" parent="MeshInstance3D"]
+size = Vector2i(750, 420)
+
+[node name="Camera3D" type="Camera3D" parent="MeshInstance3D/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 1.74846e-07, 0, -1.74846e-07, 1, 84.2844, 8.74259e-06, 25.7348)
+projection = 1
+size = 18.385
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(19.21, 0, 0, 0, 19.21, 3.35878e-06, 0, -3.35878e-06, 19.21, 84.2844, -2.8223e-07, -27.4953)
+layers = 2
+mesh = SubResource("QuadMesh_2saxr")
+surface_material_override/0 = SubResource("StandardMaterial3D_a22y7")
+
+[connection signal="mouse_entered" from="board/a1/Area3D" to="board/a1/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/a1/Area3D" to="board/a1/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/b1/Area3D" to="board/b1/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/b1/Area3D" to="board/b1/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/c1/Area3D" to="board/c1/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/c1/Area3D" to="board/c1/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/d1/Area3D" to="board/d1/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/d1/Area3D" to="board/d1/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/e1/Area3D" to="board/e1/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/e1/Area3D" to="board/e1/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/a2/Area3D" to="board/a2/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/a2/Area3D" to="board/a2/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/b2/Area3D" to="board/b2/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/b2/Area3D" to="board/b2/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/c2/Area3D" to="board/c2/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/c2/Area3D" to="board/c2/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/d2/Area3D" to="board/d2/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/d2/Area3D" to="board/d2/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/e2/Area3D" to="board/e2/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/e2/Area3D" to="board/e2/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/a3/Area3D" to="board/a3/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/a3/Area3D" to="board/a3/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/b3/Area3D" to="board/b3/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/b3/Area3D" to="board/b3/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/c3/Area3D" to="board/c3/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/c3/Area3D" to="board/c3/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/d3/Area3D" to="board/d3/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/d3/Area3D" to="board/d3/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/e3/Area3D" to="board/e3/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/e3/Area3D" to="board/e3/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/a4/Area3D" to="board/a4/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/a4/Area3D" to="board/a4/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/b4/Area3D" to="board/b4/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/b4/Area3D" to="board/b4/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/c4/Area3D" to="board/c4/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/c4/Area3D" to="board/c4/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/d4/Area3D" to="board/d4/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/d4/Area3D" to="board/d4/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/e4/Area3D" to="board/e4/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/e4/Area3D" to="board/e4/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/a5/Area3D" to="board/a5/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/a5/Area3D" to="board/a5/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/b5/Area3D" to="board/b5/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/b5/Area3D" to="board/b5/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/c5/Area3D" to="board/c5/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/c5/Area3D" to="board/c5/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/d5/Area3D" to="board/d5/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/d5/Area3D" to="board/d5/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/e5/Area3D" to="board/e5/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/e5/Area3D" to="board/e5/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Commence/Area3D" to="Commence/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Commence/Area3D" to="Commence/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="ShopConstants/NextRound/Area3D" to="ShopConstants/NextRound/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="ShopConstants/NextRound/Area3D" to="ShopConstants/NextRound/Area3D" method="_on_mouse_exited"]

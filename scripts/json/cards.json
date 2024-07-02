@@ -1,0 +1,93 @@
+{
+	"excalibur": {
+		"display": "Excalibur",
+		"name": "Excalibur",
+		"piece": "bauble",
+		"archetype": "sword",
+		"capture_value": 5,
+		"hp" : -1,
+		"description": "Knights Level-Up on\nPawn promotion",
+		"cost": 7
+	},
+	"cursed_cloth": {
+		"display": "Cursed Cloth",
+		"name": "cursed_cloth",
+		"piece": "bauble",
+		"archetype": "robe",
+		"capture_value": 3,
+		"hp" : -1,
+		"description": "Chance to survive hit\nbased on Level",
+		"cost": 5
+	},
+	
+	"pawn_of_plenty": {
+		"display": "Pawn of Plenty",
+		"name": "pawn_of_plenty",
+		"piece": "pawn",
+		"archetype": "plenty",
+		"capture_value": 1,
+		"hp" : 1,
+		"description": "Plus 20 Budget\nwhen promoted",
+		"cost": 7
+	},
+	"blue_pawn": {
+		"display": "Blue Pawn",
+		"name": "blue_pawn",
+		"piece": "pawn",
+		"archetype": "blue",
+		"capture_value": 1,
+		"hp" : 1,
+		"description": "Plus 2 Gold if in-play\nwhen round ends",
+		"cost": 2
+	},
+	"blue_bishop": {
+		"display": "Blue Bishop",
+		"name": "blue_bishop",
+		"piece": "bishop",
+		"archetype": "blue",
+		"capture_value": 3,
+		"hp" : 1,
+		"description": "Plus 2 Gold if in-play\nwhen round ends",
+		"cost": 2
+	},
+	"blue_knight": {
+		"display": "Blue Knight",
+		"name": "blue_knight",
+		"piece": "knight",
+		"archetype": "blue",
+		"capture_value": 3,
+		"hp" : 1,
+		"description": "Plus 2 Gold if in-play\nwhen round ends",
+		"cost": 2
+	},
+	"blue_rook": {
+		"display": "Blue Rook",
+		"name": "blue_rook",
+		"piece": "rook",
+		"archetype": "blue",
+		"capture_value": 5,
+		"hp" : 1,
+		"description": "Plus 2 Gold if in-play\nwhen round ends",
+		"cost": 2
+	},
+	"blue_queen": {
+		"display": "Blue Queen",
+		"name": "blue_queen",
+		"piece": "queen",
+		"archetype": "blue",
+		"capture_value": 9,
+		"hp" : 1,
+		"description": "Plus 2 Gold if in-play\nwhen round ends",
+		"cost": 3
+	},
+	"king_canute": {
+		"display": "King Canute",
+		"name": "king_canute",
+		"piece": "king",
+		"archetype": "n/a",
+		"capture_value": 20,
+		"hp" : 13,
+		"description": "King of Englad when\n the Danes invaded",
+		"cost": 999
+	}
+}

@@ -1,0 +1,671 @@
+[gd_scene load_steps=20 format=3 uid="uid://dgtilhxu443bf"]
+
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_bnyea"]
+[ext_resource type="Texture2D" uid="uid://y62qsukeo15g" path="res://sprites/white_checker.png" id="2_wyqpy"]
+[ext_resource type="Script" path="res://scripts/tile.gd" id="3_h06su"]
+[ext_resource type="Texture2D" uid="uid://p11goviq211x" path="res://sprites/commence_button.png" id="4_avxjh"]
+[ext_resource type="Script" path="res://scripts/button.gd" id="5_5lysr"]
+[ext_resource type="Texture2D" uid="uid://cmry23fl38ktn" path="res://sprites/commence_outline1.png" id="6_bxlvi"]
+[ext_resource type="Texture2D" uid="uid://bfnpx415kyu3l" path="res://sprites/mini_grid.png" id="7_urqdd"]
+[ext_resource type="Texture2D" uid="uid://c3hxh5kgwjvh0" path="res://sprites/miniatures/blue_pawn.png" id="8_xwus3"]
+
+[sub_resource type="Environment" id="Environment_1o1hx"]
+background_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_7s7kb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8cufb"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.486275, 0.486275, 0.486275, 1)
+albedo_texture = ExtResource("2_wyqpy")
+texture_filter = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_21xnx"]
+size = Vector3(1, 1, 0.0358887)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k6fau"]
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("2_wyqpy")
+texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s60ol"]
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("2_wyqpy")
+texture_filter = 0
+
+[sub_resource type="Environment" id="Environment_s8lel"]
+background_energy_multiplier = 0.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a3apq"]
+size = Vector3(1.3, 0.37, 0.24)
+
+[sub_resource type="Animation" id="Animation_7dja4"]
+resource_name = "pressed"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 2]
+}
+
+[sub_resource type="Animation" id="Animation_j5wlg"]
+resource_name = "released"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tx32m"]
+_data = {
+"pressed": SubResource("Animation_7dja4"),
+"released": SubResource("Animation_j5wlg")
+}
+
+[node name="Game" type="Node3D" node_paths=PackedStringArray("hand", "deck", "board", "graveyard", "commence")]
+script = ExtResource("1_bnyea")
+hand = NodePath("hand")
+deck = NodePath("deck")
+board = NodePath("board")
+graveyard = NodePath("graveyard")
+commence = NodePath("Commence/Area3D")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5, 4)
+environment = SubResource("Environment_1o1hx")
+projection = 1
+fov = 50.0
+size = 4.0
+
+[node name="board" type="Node3D" parent="."]
+transform = Transform3D(-1, 8.74228e-08, 1.74846e-07, -8.74228e-08, -1, 7.64275e-15, 1.74846e-07, -7.64274e-15, 1, -2, -2, 6.99382e-07)
+
+[node name="a1" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, 0, 0, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/a1"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/a1/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="b1" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -0.999252, -2.38419e-07, 5.68434e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_k6fau")
+
+[node name="Area3D" type="Area3D" parent="board/b1"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/b1/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="c1" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -1.99958, 0, 5.68434e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/c1"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/c1/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="d1" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -2.99884, 0, 2.84217e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_k6fau")
+
+[node name="Area3D" type="Area3D" parent="board/d1"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/d1/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="e1" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -3.99807, -3.57628e-07, 1.13687e-13)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/e1"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/e1/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="a2" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -4.76837e-07, -1, 2.84217e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_s60ol")
+
+[node name="Area3D" type="Area3D" parent="board/a2"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/a2/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="b2" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -0.999252, -1, 2.84217e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/b2"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/b2/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="c2" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -1.99958, -1, -2.84217e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_s60ol")
+
+[node name="Area3D" type="Area3D" parent="board/c2"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/c2/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="d2" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -2.99884, -1, 8.52651e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/d2"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/d2/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="e2" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -3.99807, -1, 1.42109e-13)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_s60ol")
+
+[node name="Area3D" type="Area3D" parent="board/e2"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/e2/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="a3" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, 0, -2, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/a3"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/a3/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="b3" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -0.999252, -2, 2.84217e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_k6fau")
+
+[node name="Area3D" type="Area3D" parent="board/b3"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/b3/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="c3" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -1.99958, -2, 8.52651e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/c3"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/c3/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="d3" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -2.99884, -2, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_k6fau")
+
+[node name="Area3D" type="Area3D" parent="board/d3"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/d3/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="e3" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -3.99807, -2, 8.52651e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/e3"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/e3/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="a4" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, 0, -3, -5.68434e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_s60ol")
+
+[node name="Area3D" type="Area3D" parent="board/a4"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/a4/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="b4" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -0.999252, -3, 2.84217e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/b4"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/b4/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="c4" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -1.99958, -3, 5.68434e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_s60ol")
+
+[node name="Area3D" type="Area3D" parent="board/c4"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/c4/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="d4" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -2.99884, -3, 2.84217e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/d4"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/d4/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="e4" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -3.99807, -3, 0)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_s60ol")
+
+[node name="Area3D" type="Area3D" parent="board/e4"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/e4/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="a5" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -4.76837e-07, -4, 8.52651e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/a5"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/a5/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="b5" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -0.999252, -4, -2.84217e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_k6fau")
+
+[node name="Area3D" type="Area3D" parent="board/b5"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/b5/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="c5" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -1.99958, -4, 8.52651e-14)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/c5"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/c5/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="d5" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -2.99884, -4, 1.7053e-13)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_k6fau")
+
+[node name="Area3D" type="Area3D" parent="board/d5"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/d5/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="e5" type="MeshInstance3D" parent="board"]
+transform = Transform3D(1, -1.3363e-21, -1.7683e-07, -2.68776e-21, 1, -2.76894e-16, 1.7683e-07, 0, 1, -3.99807, -4, 1.98952e-13)
+mesh = SubResource("QuadMesh_7s7kb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_8cufb")
+
+[node name="Area3D" type="Area3D" parent="board/e5"]
+script = ExtResource("3_h06su")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="board/e5/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055542)
+shape = SubResource("BoxShape3D_21xnx")
+
+[node name="hand" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.2, 0)
+
+[node name="deck" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, -2.125, 0)
+
+[node name="graveyard" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.875, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_s8lel")
+
+[node name="Commence" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4, 0)
+modulate = Color(0.509804, 0.509804, 0.509804, 1)
+texture_filter = 0
+texture = ExtResource("4_avxjh")
+hframes = 3
+frame = 2
+
+[node name="Area3D" type="Area3D" parent="Commence"]
+script = ExtResource("5_5lysr")
+button_type = "commence"
+
+[node name="Outline" type="Sprite3D" parent="Commence/Area3D"]
+visible = false
+sorting_offset = 1.0
+texture_filter = 0
+texture = ExtResource("6_bxlvi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Commence/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0571728, 0)
+shape = SubResource("BoxShape3D_a3apq")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Commence/Area3D"]
+libraries = {
+"": SubResource("AnimationLibrary_tx32m")
+}
+speed_scale = 18.0
+
+[node name="Minimap" type="Sprite3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 3, -1, 0)
+texture_filter = 0
+texture = ExtResource("7_urqdd")
+
+[node name="a1" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.320317, -0.320517, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="b1" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.158347, -0.320517, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="c1" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.94205e-05, -0.320517, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="d1" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16207, -0.320517, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="e1" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.321284, -0.320517, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="a2" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.320317, -0.160572, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="b2" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.158347, -0.160572, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="c2" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.94205e-05, -0.160572, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="d2" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16207, -0.160572, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="e2" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.321284, -0.160572, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="a3" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.320317, -5.96046e-06, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="b3" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.158347, -5.96046e-06, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="c3" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.94205e-05, -5.96046e-06, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="d3" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16207, -5.96046e-06, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="e3" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.321284, -5.96046e-06, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="a4" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.320317, 0.15997, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="b4" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.158347, 0.15997, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="c4" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.94205e-05, 0.15997, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="d4" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16207, 0.15997, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="e4" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.321284, 0.15997, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="a5" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.320317, 0.319946, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="b5" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.158347, 0.319946, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="c5" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.94205e-05, 0.319946, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="d5" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16207, 0.319946, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[node name="e5" type="Sprite3D" parent="Minimap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.321284, 0.319946, 0)
+visible = false
+texture_filter = 0
+texture = ExtResource("8_xwus3")
+
+[connection signal="mouse_entered" from="board/a1/Area3D" to="board/a1/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/a1/Area3D" to="board/a1/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/b1/Area3D" to="board/b1/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/b1/Area3D" to="board/b1/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/c1/Area3D" to="board/c1/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/c1/Area3D" to="board/c1/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/d1/Area3D" to="board/d1/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/d1/Area3D" to="board/d1/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/e1/Area3D" to="board/e1/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/e1/Area3D" to="board/e1/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/a2/Area3D" to="board/a2/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/a2/Area3D" to="board/a2/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/b2/Area3D" to="board/b2/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/b2/Area3D" to="board/b2/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/c2/Area3D" to="board/c2/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/c2/Area3D" to="board/c2/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/d2/Area3D" to="board/d2/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/d2/Area3D" to="board/d2/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/e2/Area3D" to="board/e2/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/e2/Area3D" to="board/e2/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/a3/Area3D" to="board/a3/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/a3/Area3D" to="board/a3/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/b3/Area3D" to="board/b3/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/b3/Area3D" to="board/b3/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/c3/Area3D" to="board/c3/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/c3/Area3D" to="board/c3/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/d3/Area3D" to="board/d3/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/d3/Area3D" to="board/d3/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/e3/Area3D" to="board/e3/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/e3/Area3D" to="board/e3/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/a4/Area3D" to="board/a4/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/a4/Area3D" to="board/a4/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/b4/Area3D" to="board/b4/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/b4/Area3D" to="board/b4/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/c4/Area3D" to="board/c4/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/c4/Area3D" to="board/c4/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/d4/Area3D" to="board/d4/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/d4/Area3D" to="board/d4/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/e4/Area3D" to="board/e4/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/e4/Area3D" to="board/e4/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/a5/Area3D" to="board/a5/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/a5/Area3D" to="board/a5/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/b5/Area3D" to="board/b5/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/b5/Area3D" to="board/b5/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/c5/Area3D" to="board/c5/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/c5/Area3D" to="board/c5/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/d5/Area3D" to="board/d5/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/d5/Area3D" to="board/d5/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="board/e5/Area3D" to="board/e5/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="board/e5/Area3D" to="board/e5/Area3D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Commence/Area3D" to="Commence/Area3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Commence/Area3D" to="Commence/Area3D" method="_on_mouse_exited"]

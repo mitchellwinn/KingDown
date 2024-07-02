@@ -1,0 +1,482 @@
+[gd_scene load_steps=26 format=3 uid="uid://l4w04v37cfpu"]
+
+[ext_resource type="Texture2D" uid="uid://djljwv8t4ki68" path="res://sprites/excalibur.png" id="1_6y6rm"]
+[ext_resource type="Script" path="res://scripts/card.gd" id="2_ujo4m"]
+[ext_resource type="Script" path="res://scripts/state_machine.gd" id="3_5q3v2"]
+[ext_resource type="Script" path="res://scripts/states/unit/pawn.gd" id="4_ytyle"]
+[ext_resource type="Script" path="res://scripts/states/unit/king.gd" id="5_ku4ih"]
+[ext_resource type="Script" path="res://scripts/states/unit/rook.gd" id="5_o4j58"]
+[ext_resource type="Script" path="res://scripts/states/unit/bishop.gd" id="6_okp10"]
+[ext_resource type="Texture2D" uid="uid://cylqlbe5vtd8e" path="res://sprites/blue_bishop.png" id="8_bl5wm"]
+[ext_resource type="Texture2D" uid="uid://vg850632xyl7" path="res://sprites/window.png" id="9_0g21c"]
+[ext_resource type="FontFile" uid="uid://y8v8ttnxc0ms" path="res://alagard.ttf" id="10_cypk5"]
+[ext_resource type="Texture2D" uid="uid://dj7scm6i4dnmk" path="res://sprites/buy_button.png" id="11_6uclo"]
+[ext_resource type="Script" path="res://scripts/button.gd" id="12_g2t6m"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_pky6t"]
+size = Vector2(0.72, 0.96)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hmknt"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("1_6y6rm")
+texture_filter = 0
+texture_repeat = false
+grow = true
+
+[sub_resource type="Animation" id="Animation_u6dnv"]
+resource_name = "description_open"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DescriptionWindow:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.277392, 0.31864),
+"update": 0,
+"values": [Vector3(1, 0, 1), Vector3(1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DescriptionWindow/Buy:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DescriptionWindow/Name:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DescriptionWindow/Description:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("BuyArea/CollisionShape3D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_xkonm"]
+resource_name = "description_close"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DescriptionWindow:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.183011, 0.277392),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1, 0, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BuyArea/CollisionShape3D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_lnhcb"]
+resource_name = "buy"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DescriptionWindow:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(0.31864),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DescriptionWindow/Buy:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DescriptionWindow/Name:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DescriptionWindow/Description:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("BuyArea/CollisionShape3D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hbwok"]
+_data = {
+"buy": SubResource("Animation_lnhcb"),
+"description_close": SubResource("Animation_xkonm"),
+"description_open": SubResource("Animation_u6dnv")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4moew"]
+size = Vector3(0.71, 0.96, 0.43)
+
+[sub_resource type="Curve3D" id="Curve3D_gi6xi"]
+bake_interval = 0.07
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -0.34, 0.48, 0, 0, 0, 0, 0, 0, 0, -0.34, -0.48, 0, 0, 0, 0, 0, 0, 0, 0.34, -0.48, 0, 0, 0, 0, 0, 0, 0, 0.34, 0.48, 0, 0, 0, 0, 0, 0, 0, -0.34, 0.48, 0),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0)
+}
+point_count = 5
+
+[sub_resource type="Gradient" id="Gradient_oohh0"]
+offsets = PackedFloat32Array(0, 0.409091)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wl1qd"]
+gradient = SubResource("Gradient_oohh0")
+width = 4
+height = 2
+fill_from = Vector2(0, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5kvei"]
+size = Vector3(1.3, 0.37, 0.24)
+
+[sub_resource type="Animation" id="Animation_vcnxr"]
+resource_name = "pressed"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../DescriptionWindow/Buy:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(0.03125, 0.101532, 0.03125),
+"update": 0,
+"values": [0, 2, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fy7om"]
+_data = {
+"pressed": SubResource("Animation_vcnxr")
+}
+
+[node name="card" type="MeshInstance3D"]
+top_level = true
+layers = 4
+mesh = SubResource("QuadMesh_pky6t")
+surface_material_override/0 = SubResource("StandardMaterial3D_hmknt")
+script = ExtResource("2_ujo4m")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_hbwok")
+}
+speed_scale = 4.0
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_4moew")
+
+[node name="SelectOutline" type="Path3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965, 0, 0, 0, 1, 0, 0, 0)
+curve = SubResource("Curve3D_gi6xi")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="SelectOutline"]
+transform = Transform3D(4.37114e-08, -3.82136e-15, 0.999998, -8.74228e-08, -0.999998, 0, 1, -8.74226e-08, -4.37113e-08, -0.34, 0.48, 0)
+progress = 3.28501
+cubic_interp = false
+
+[node name="Sprite3D" type="Sprite3D" parent="SelectOutline/PathFollow3D"]
+transform = Transform3D(-4.37114e-08, 0.00520206, 0.999986, -0.00520191, 0.999973, -0.00520199, -0.999986, -0.00520184, 2.7017e-05, 0, 0, 0)
+texture = SubResource("GradientTexture2D_wl1qd")
+
+[node name="PathFollow3D2" type="PathFollow3D" parent="SelectOutline"]
+transform = Transform3D(4.37114e-08, -3.82136e-15, 0.999998, -8.74228e-08, -0.999998, 0, 1, -8.74226e-08, -4.37113e-08, -0.263919, 0.48, 0)
+progress = 3.20289
+
+[node name="Sprite3D" type="Sprite3D" parent="SelectOutline/PathFollow3D2"]
+transform = Transform3D(-4.37114e-08, 0.00520206, 0.999986, -0.00520191, 0.999973, -0.00520199, -0.999986, -0.00520184, 2.7017e-05, 0, 0, 0)
+texture = SubResource("GradientTexture2D_wl1qd")
+
+[node name="PathFollow3D3" type="PathFollow3D" parent="SelectOutline"]
+transform = Transform3D(4.37114e-08, -3.82136e-15, 0.999998, -8.74228e-08, -0.999998, 0, 1, -8.74226e-08, -4.37113e-08, -0.180837, 0.48, 0)
+progress = 3.12076
+
+[node name="Sprite3D" type="Sprite3D" parent="SelectOutline/PathFollow3D3"]
+transform = Transform3D(-4.37114e-08, 0.00520206, 0.999986, -0.00520191, 0.999973, -0.00520199, -0.999986, -0.00520184, 2.7017e-05, 0, 0, 0)
+texture = SubResource("GradientTexture2D_wl1qd")
+
+[node name="PathFollow3D4" type="PathFollow3D" parent="SelectOutline"]
+transform = Transform3D(4.37114e-08, -3.82136e-15, 0.999998, -8.74228e-08, -0.999998, 0, 1, -8.74226e-08, -4.37113e-08, -0.0990239, 0.48, 0)
+progress = 3.03864
+
+[node name="Sprite3D" type="Sprite3D" parent="SelectOutline/PathFollow3D4"]
+transform = Transform3D(-4.37114e-08, 0.00520206, 0.999986, -0.00520191, 0.999973, -0.00520199, -0.999986, -0.00520184, 2.7017e-05, 0, 0, 0)
+texture = SubResource("GradientTexture2D_wl1qd")
+
+[node name="PathFollow3D5" type="PathFollow3D" parent="SelectOutline"]
+transform = Transform3D(4.37114e-08, -3.82136e-15, 0.999998, -8.74228e-08, -0.999998, 0, 1, -8.74226e-08, -4.37113e-08, -0.0165604, 0.48, 0)
+progress = 2.95651
+
+[node name="Sprite3D" type="Sprite3D" parent="SelectOutline/PathFollow3D5"]
+transform = Transform3D(-4.37114e-08, 0.00520206, 0.999986, -0.00520191, 0.999973, -0.00520199, -0.999986, -0.00520184, 2.7017e-05, 0, 0, 0)
+texture = SubResource("GradientTexture2D_wl1qd")
+
+[node name="PathFollow3D7" type="PathFollow3D" parent="SelectOutline"]
+transform = Transform3D(4.37114e-08, -3.82136e-15, 0.999998, -8.74228e-08, -0.999998, 0, 1, -8.74226e-08, -4.37113e-08, 0.0656452, 0.48, 0)
+progress = 2.87439
+
+[node name="Sprite3D" type="Sprite3D" parent="SelectOutline/PathFollow3D7"]
+transform = Transform3D(-4.37114e-08, 0.00520206, 0.999986, -0.00520191, 0.999973, -0.00520199, -0.999986, -0.00520184, 2.7017e-05, 0, 0, 0)
+texture = SubResource("GradientTexture2D_wl1qd")
+
+[node name="PathFollow3D8" type="PathFollow3D" parent="SelectOutline"]
+transform = Transform3D(4.37114e-08, -3.82136e-15, 0.999998, -8.74228e-08, -0.999998, 0, 1, -8.74226e-08, -4.37113e-08, 0.148313, 0.48, 0)
+progress = 2.79226
+
+[node name="Sprite3D" type="Sprite3D" parent="SelectOutline/PathFollow3D8"]
+transform = Transform3D(-4.37114e-08, 0.00520206, 0.999986, -0.00520191, 0.999973, -0.00520199, -0.999986, -0.00520184, 2.7017e-05, 0, 0, 0)
+texture = SubResource("GradientTexture2D_wl1qd")
+
+[node name="PathFollow3D9" type="PathFollow3D" parent="SelectOutline"]
+transform = Transform3D(4.37114e-08, -3.82136e-15, 0.999998, -8.74228e-08, -0.999998, 0, 1, -8.74226e-08, -4.37113e-08, 0.230133, 0.48, 0)
+progress = 2.71014
+
+[node name="Sprite3D" type="Sprite3D" parent="SelectOutline/PathFollow3D9"]
+transform = Transform3D(-4.37114e-08, 0.00520206, 0.999986, -0.00520191, 0.999973, -0.00520199, -0.999986, -0.00520184, 2.7017e-05, 0, 0, 0)
+texture = SubResource("GradientTexture2D_wl1qd")
+
+[node name="PathFollow3D10" type="PathFollow3D" parent="SelectOutline"]
+transform = Transform3D(3.80365e-08, -0.0649128, 0.99789, -8.72384e-08, -0.99789, -0.0649128, 1, -8.45853e-08, -4.36192e-08, 0.312096, 0.480034, 0)
+progress = 2.62801
+
+[node name="Sprite3D" type="Sprite3D" parent="SelectOutline/PathFollow3D10"]
+transform = Transform3D(-4.37114e-08, 0.00520206, 0.999986, -0.00520191, 0.999973, -0.00520199, -0.999986, -0.00520184, 2.7017e-05, 0, 0, 0)
+texture = SubResource("GradientTexture2D_wl1qd")
+
+[node name="PathFollow3D11" type="PathFollow3D" parent="SelectOutline"]
+transform = Transform3D(-4.37114e-08, -0.999998, 4.37113e-08, 0, -4.37113e-08, -0.999998, 1, -4.37113e-08, 1.91068e-15, 0.34, 0.426707, 0)
+progress = 2.54589
+
+[node name="Sprite3D" type="Sprite3D" parent="SelectOutline/PathFollow3D11"]
+transform = Transform3D(-4.37114e-08, 0.00520206, 0.999986, -0.00520191, 0.999973, -0.00520199, -0.999986, -0.00520184, 2.7017e-05, 0, 0, 0)
+texture = SubResource("GradientTexture2D_wl1qd")
+
+[node name="PathFollow3D12" type="PathFollow3D" parent="SelectOutline"]
+transform = Transform3D(-4.37114e-08, -0.999998, 4.37113e-08, 0, -4.37113e-08, -0.999998, 1, -4.37113e-08, 1.91068e-15, 0.34, 0.342259, 0)
+progress = 2.46376
+
+[node name="Sprite3D" type="Sprite3D" parent="SelectOutline/PathFollow3D12"]
+transform = Transform3D(-4.37114e-08, 0.00520206, 0.999986, -0.00520191, 0.999973, -0.00520199, -0.999986, -0.00520184, 2.7017e-05, 0, 0, 0)
+texture = SubResource("GradientTexture2D_wl1qd")
+
+[node name="PathFollow3D13" type="PathFollow3D" parent="SelectOutline"]
+transform = Transform3D(-4.37114e-08, -0.999998, 4.37113e-08, 0, -4.37113e-08, -0.999998, 1, -4.37113e-08, 1.91068e-15, 0.34, 0.261739, 0)
+progress = 2.38163
+
+[node name="Sprite3D" type="Sprite3D" parent="SelectOutline/PathFollow3D13"]
+transform = Transform3D(-4.37114e-08, 0.00520206, 0.999986, -0.00520191, 0.999973, -0.00520199, -0.999986, -0.00520184, 2.7017e-05, 0, 0, 0)
+texture = SubResource("GradientTexture2D_wl1qd")
+
+[node name="PathFollow3D14" type="PathFollow3D" parent="SelectOutline"]
+transform = Transform3D(-4.37114e-08, -0.999998, 4.37113e-08, 0, -4.37113e-08, -0.999998, 1, -4.37113e-08, 1.91068e-15, 0.34, 0.179562, 0)
+progress = 2.29951
+
+[node name="Sprite3D" type="Sprite3D" parent="SelectOutline/PathFollow3D14"]
+transform = Transform3D(-4.37114e-08, 0.00520206, 0.999986, -0.00520191, 0.999973, -0.00520199, -0.999986, -0.00520184, 2.7017e-05, 0, 0, 0)
+texture = SubResource("GradientTexture2D_wl1qd")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("card")]
+script = ExtResource("3_5q3v2")
+card = NodePath("..")
+
+[node name="pawn" type="Node" parent="StateMachine"]
+script = ExtResource("4_ytyle")
+
+[node name="rook" type="Node" parent="StateMachine"]
+script = ExtResource("5_o4j58")
+
+[node name="bishop" type="Node" parent="StateMachine"]
+script = ExtResource("6_okp10")
+
+[node name="king" type="Node" parent="StateMachine"]
+script = ExtResource("5_ku4ih")
+
+[node name="queen" type="Node" parent="StateMachine"]
+script = ExtResource("5_ku4ih")
+
+[node name="knight" type="Node" parent="StateMachine"]
+script = ExtResource("5_ku4ih")
+
+[node name="bauble" type="Node" parent="StateMachine"]
+script = ExtResource("5_ku4ih")
+
+[node name="Shadow" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.044, -0.044, -5.23713)
+layers = 4
+modulate = Color(0, 0, 0, 0.592157)
+texture_filter = 0
+texture = ExtResource("8_bl5wm")
+
+[node name="BuyArea" type="Area3D" parent="." node_paths=PackedStringArray("sprite", "outline")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.824264, 0.67859)
+script = ExtResource("12_g2t6m")
+sprite = NodePath("../DescriptionWindow/Buy")
+outline = NodePath("../DescriptionWindow/Buy/Outline")
+button_type = "buy"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BuyArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0571728, 0)
+shape = SubResource("BoxShape3D_5kvei")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BuyArea"]
+libraries = {
+"": SubResource("AnimationLibrary_fy7om")
+}
+
+[node name="DescriptionWindow" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.824264, 0.668677)
+layers = 4
+texture_filter = 0
+texture = ExtResource("9_0g21c")
+metadata/_edit_group_ = true
+
+[node name="Shadow" type="Sprite3D" parent="DescriptionWindow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.044, -0.044, -0.0544421)
+layers = 4
+modulate = Color(0, 0, 0, 0.54902)
+texture_filter = 0
+texture = ExtResource("9_0g21c")
+metadata/_edit_group_ = true
+
+[node name="Name" type="Label3D" parent="DescriptionWindow"]
+transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -3.62716e-08, 0.130451, 0.00123686)
+visible = false
+layers = 4
+sorting_use_aabb_center = false
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.53
+alpha_hash_scale = 0.0
+alpha_antialiasing_edge = 0.11
+texture_filter = 0
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(0, 0, 0, 0.0941176)
+text = "excalibur"
+font = ExtResource("10_cypk5")
+font_size = 16
+outline_size = 5
+uppercase = true
+autowrap_mode = 3
+
+[node name="Description" type="Label3D" parent="DescriptionWindow"]
+transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -3.62716e-08, 0.0555012, 0.00123686)
+visible = false
+layers = 4
+sorting_use_aabb_center = false
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.53
+alpha_hash_scale = 0.0
+alpha_antialiasing_edge = 0.11
+texture_filter = 0
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(0, 0, 0, 0.0941176)
+text = "Plus 1 Gold if in-play
+when round ends"
+font = ExtResource("10_cypk5")
+font_size = 14
+outline_size = 5
+vertical_alignment = 0
+autowrap_mode = 3
+
+[node name="Buy" type="Sprite3D" parent="DescriptionWindow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00991321)
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("11_6uclo")
+hframes = 3
+
+[node name="Outline" type="Sprite3D" parent="DescriptionWindow/Buy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0105276, 0)
+visible = false
+sorting_offset = 1.0
+alpha_cut = 1
+texture_filter = 0
+
+[connection signal="mouse_entered" from="Area3D" to="." method="_on_area_3d_mouse_entered"]
+[connection signal="mouse_exited" from="Area3D" to="." method="_on_area_3d_mouse_exited"]
+[connection signal="mouse_entered" from="BuyArea" to="BuyArea" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="BuyArea" to="BuyArea" method="_on_mouse_exited"]
