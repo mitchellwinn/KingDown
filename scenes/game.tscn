@@ -86,18 +86,6 @@ tracks/0/keys = {
 "update": 0,
 "values": [0, 2]
 }
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("..:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
 
 [sub_resource type="Animation" id="Animation_j5wlg"]
 resource_name = "released"
@@ -113,18 +101,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [2, 0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("..:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(2),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tx32m"]
@@ -182,6 +158,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(0.406126, 0.406126),
 "update": 0,
 "values": [Vector3(0, -5, 0), Vector3(0, -4, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Commence:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_2gmhq"]
@@ -409,6 +397,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector3(0.49, -3.044, 0), Vector3(0.489515, -1.91899, 0)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../ShopConstants/NextRound:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_ysm33"]
 resource_name = "UI_out"
@@ -423,6 +423,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(0.0473661, 0.0473661),
 "update": 0,
 "values": [Vector3(0.489515, -1.91899, 0), Vector3(0.49, -3.044, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../ShopConstants/NextRound:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.9),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vojg3"]
@@ -1645,12 +1657,11 @@ alpha_cut = 1
 texture_filter = 0
 texture = ExtResource("14_pujt3")
 hframes = 3
-frame = 1
 
 [node name="Area3D" type="Area3D" parent="ShopConstants/NextRound" node_paths=PackedStringArray("sprite", "outline")]
 script = ExtResource("5_5lysr")
-sprite = NodePath("../../../Commence")
-outline = NodePath("../../../Commence/Area3D/Outline")
+sprite = NodePath("..")
+outline = NodePath("Outline")
 button_type = "next_round"
 
 [node name="Outline" type="Sprite3D" parent="ShopConstants/NextRound/Area3D"]
