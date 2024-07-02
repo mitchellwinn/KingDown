@@ -50,10 +50,10 @@ func _process(delta):
 					outline.visible = false
 					pressed = true
 					toggle.emit()
-					Directory.game_manager.update_gold()
 					Directory.play_sound("res://audio/sfx/Change.wav",-5,.75,0.05,1)
-					await get_tree().create_timer(.35).timeout
+					await get_tree().create_timer(.25).timeout
 					Directory.game_manager.gold -= get_parent().cost
+					Directory.game_manager.update_gold()
 					match get_parent().piece:
 						"bauble":
 							get_parent().change_area("baubles")

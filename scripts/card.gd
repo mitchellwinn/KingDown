@@ -127,9 +127,10 @@ func change_area(new_area):
 		"graveyard":
 			area = new_area
 			in_play = false
-			Directory.game_manager.live_pieces.erase(self)
 			change_sprite("card_back")
 			if is_inside_tree():
+				if Directory.game_manager.live_pieces.has(self):
+					Directory.game_manager.live_pieces.erase(self)
 				reparent(Directory.game_manager.graveyard)
 				Directory.game_manager.live_pieces.erase(self)
 			else:

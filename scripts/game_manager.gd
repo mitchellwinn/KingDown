@@ -156,11 +156,11 @@ func change_phase(new_phase):
 			populate_shop()
 			round += 1
 			for card in live_pieces:
-				live_pieces.erase(card)
 				if card.enemy:
 					card.queue_free()
 				else:
 					card.change_area("deck")
+			live_pieces.clear()
 			for card in hand.get_children():
 				card.change_area("deck")
 				await get_tree().create_timer(.075).timeout
