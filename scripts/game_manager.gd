@@ -26,6 +26,8 @@ var gold := 5
 var live_pieces: Array
 var turn_card
 var attacking = false
+var card_effect_resolving = false
+var combo_pitch := 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -131,6 +133,11 @@ func spawn_card(card,area,enemy):
 		_card.initialize()
 	return _card
 
+func reset_combo_counter():
+	await get_tree().create_timer(1).timeout
+	if !card_effect_resolving:
+		combo_pitch = 1
+
 func change_phase(new_phase):
 	phase = new_phase
 	match new_phase:
@@ -149,7 +156,11 @@ func change_phase(new_phase):
 			commence.pressed = false
 			commence._on_toggle()
 		"win":
+			await get_tree().create_timer(.75).timeout
 			round_end.emit()
+			await get_tree().create_timer(.1).timeout
+			while card_effect_resolving:
+				await get_tree().create_timer(.5).timeout
 			arrange_camera()
 			gold+=round*1.3+budget
 			$AnimationPlayer.play("UI_out")

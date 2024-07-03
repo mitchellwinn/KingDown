@@ -26,7 +26,7 @@ func play_sound(path,volume,pitch,pitch_range,timer):
 	var sound = load("res://scenes/sound.tscn").instantiate()
 	get_node("/root").add_child(sound)
 	sound.stream = load(path)
-	sound.pitch_scale = pitch+randf_range(-pitch_range,pitch_range)
+	sound.pitch_scale = pitch+rng.randf_range(-pitch_range,pitch_range)
 	sound.volume_db = volume
 	sound.play()
 	await get_tree().create_timer(timer).timeout

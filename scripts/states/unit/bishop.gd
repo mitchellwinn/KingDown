@@ -95,9 +95,9 @@ func move():
 	for _card in Directory.game_manager.live_pieces:
 		if !_card == null:
 			continue
-		if !_card.enemy and _card.get_tile().safe>=1 and card != self:
+		if !_card.enemy and _card.get_tile().safe>=1 and _card != card:
 			target = _card
-	print("bishop of "+card.get_parent().name+" moves in "+mode+" mode targeting "+str(target)+".")
+	print("bishop of "+card.get_parent().name+" moves in "+mode+" mode targeting "+str(target.display)+".")
 	east_offset_from_target = card.get_tile().tile_id%5-Directory.game_manager.boss.get_tile().tile_id%5
 	north_offset_from_target = (card.get_tile().tile_id-1)/5-(Directory.game_manager.boss.get_tile().tile_id-1)/5
 	
@@ -158,7 +158,7 @@ func move():
 						if! await go_direction(true,"south_east"):
 							if! await go_direction(true,"south_west"):
 								return #failed to move
-		return true
+	return true
 	
 func move_direction_roll(): #deprecated
 	if moved:
@@ -203,12 +203,6 @@ func go_direction(start,direction):
 		print("bishop of "+card.get_parent().name+" has continued moving in the "+direction+" direction!")
 	else:
 		print("bishop of "+card.get_parent().name+" has begun moving in the "+direction+" direction...")
-	if start == false:
-		pass
-		#print("bishop of "+card.get_parent().name+" has continued moving in the "+direction+" direction!")
-	else:
-		pass
-		#print("bishop of "+card.get_parent().name+" has begun moving in the "+direction+" direction...")
 	if card.area!="field":
 		return
 	var neighbor = card.get_tile().call("get_"+direction+"_neighbor")
@@ -228,7 +222,7 @@ func go_direction(start,direction):
 			return 
 		
 	start = false
-	update_position(card.get_parent().get_node("Area3D").call("get_"+direction+"_neighbor").get_parent())	
+	await update_position(neighbor.get_parent())	
 	if card.get_tile().safe<=-1:
 		if target == Directory.game_manager.boss:
 			if king_on_diagonal(2):
@@ -262,16 +256,16 @@ func go_direction(start,direction):
 		if !neighbor:
 			pass
 		elif neighbor.safe<0:
-			await call("go_"+direction,false)
+			await call("go_direction",false,direction)
 		elif neighbor.call("get_"+direction+"_neighbor"):
 			if neighbor.call("get_"+direction+"_neighbor").safe<0:
-				await call("go_"+direction,false)
+				await call("go_direction",false,direction)
 			elif neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor"):
 				if neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").safe<0:
-					await call("go_"+direction,false)
+					await call("go_direction",false,direction)
 				elif neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor"):
 					if neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").safe<0:
-						await call("go_"+direction,false)
+						await call("go_direction",false,direction)
 	Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 	return true
 

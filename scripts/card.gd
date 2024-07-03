@@ -14,6 +14,7 @@ var target_position
 var selected:= false
 var in_play:= false
 var cost: int
+var uid: int
 
 var hp: int
 
@@ -35,6 +36,7 @@ func initialize():
 	cost = card_list[identifying_name]["cost"]
 	$DescriptionWindow/Name.text = display
 	$DescriptionWindow/Description.text = description
+	uid = Directory.rng.randi_range(-99999,99999)
 	$StateMachine.initialize()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -129,8 +131,9 @@ func change_area(new_area):
 			in_play = false
 			change_sprite("card_back")
 			if is_inside_tree():
-				if Directory.game_manager.live_pieces.has(self):
-					Directory.game_manager.live_pieces.erase(self)
+				for card in Directory.game_manager.live_pieces:
+					if card.uid == uid:
+						Directory.game_manager.live_pieces.erase(self)
 				reparent(Directory.game_manager.graveyard)
 				Directory.game_manager.live_pieces.erase(self)
 			else:
@@ -156,7 +159,7 @@ func change_area(new_area):
 		"field":
 			if !enemy:
 				Directory.play_sound("res://audio/sfx/cardflick/"+str(Directory.rng.randi_range(1,8))+".mp3",0,.9,0.05,1)
-				if Directory.game_manager.budget>=capture_value:
+				if Directory.game_manager.budget>=capture_value and area == "hand":
 					area = new_area
 					Directory.game_manager.budget -= capture_value
 					Directory.game_manager.update_sideboard()

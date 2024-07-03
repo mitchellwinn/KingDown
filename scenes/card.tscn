@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://l4w04v37cfpu"]
+[gd_scene load_steps=27 format=3 uid="uid://l4w04v37cfpu"]
 
 [ext_resource type="Texture2D" uid="uid://djljwv8t4ki68" path="res://sprites/excalibur.png" id="1_6y6rm"]
 [ext_resource type="Script" path="res://scripts/card.gd" id="2_ujo4m"]
@@ -178,11 +178,52 @@ tracks/4/keys = {
 "values": [false]
 }
 
+[sub_resource type="Animation" id="Animation_58cn7"]
+resource_name = "proc"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.7, 2.3, 3),
+"transitions": PackedFloat32Array(0.129408, 0.129408, 0.129408, 0.5, 0.129408),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0.9, 0.9, 0.9), Vector3(1.2, 1.2, 1.2), Vector3(1.00001, 1.00001, 1.00001), Vector3(1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.9, 2.3, 3),
+"transitions": PackedFloat32Array(0.116629, 0.392292, 0.353553, 0.392292, 0.5, 0.116629),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.00620004, 0.00022471, 0.106046), Vector3(0.0189732, -0.00128177, -0.106482), Vector3(-0.00620004, 0.00022471, 0.106046), Vector3(-0.000288079, 1.04409e-05, 0.00492734), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DescriptionWindow:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 0, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hbwok"]
 _data = {
 "buy": SubResource("Animation_lnhcb"),
 "description_close": SubResource("Animation_xkonm"),
-"description_open": SubResource("Animation_u6dnv")
+"description_open": SubResource("Animation_u6dnv"),
+"proc1": SubResource("Animation_58cn7")
 }
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4moew"]
@@ -398,6 +439,7 @@ button_type = "buy"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BuyArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0571728, 0)
 shape = SubResource("BoxShape3D_5kvei")
+disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="BuyArea"]
 libraries = {
@@ -405,7 +447,7 @@ libraries = {
 }
 
 [node name="DescriptionWindow" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.824264, 0.668677)
+transform = Transform3D(1, 0, 0, 0, 0, 0, 0, 0, 1, 0, -0.824264, 0.668677)
 layers = 4
 texture_filter = 0
 texture = ExtResource("9_0g21c")
@@ -421,7 +463,6 @@ metadata/_edit_group_ = true
 
 [node name="Name" type="Label3D" parent="DescriptionWindow"]
 transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -3.62716e-08, 0.130451, 0.00123686)
-visible = false
 layers = 4
 sorting_use_aabb_center = false
 pixel_size = 0.01
@@ -442,7 +483,6 @@ autowrap_mode = 3
 
 [node name="Description" type="Label3D" parent="DescriptionWindow"]
 transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -3.62716e-08, 0.0555012, 0.00123686)
-visible = false
 layers = 4
 sorting_use_aabb_center = false
 pixel_size = 0.01
@@ -464,6 +504,7 @@ autowrap_mode = 3
 
 [node name="Buy" type="Sprite3D" parent="DescriptionWindow"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00991321)
+visible = false
 alpha_cut = 1
 texture_filter = 0
 texture = ExtResource("11_6uclo")

@@ -100,6 +100,7 @@ func go_south_east(start):
 	return true
 
 func update_position(parent):
+	print("reparenting "+card.display+" to "+str(parent))
 	card.reparent(parent)
 	#print(card.identifying_name+" update position to "+str(card.get_parent().get_node("Area3D").tile_id))
 	card.target_position = card.get_parent().global_position+Vector3(0,0,6)

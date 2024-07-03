@@ -99,76 +99,23 @@ func move():
 	east_offset_from_target = card.get_tile().tile_id%5-target.get_tile().tile_id%5
 	north_offset_from_target = (card.get_tile().tile_id-1)/5-(target.get_tile().tile_id-1)/5
 	
-	#try east or west
-	if abs(east_offset_from_target)>abs(north_offset_from_target):
-		#try west
-		if east_offset_from_target>0:
+	if north_offset_from_target>0:
+		if! await go_direction(true,"south"):
 			if! await go_direction(true,"west"):
-				if north_offset_from_target>0:
-					if! await go_direction(true,"south"):
-						if card.get_tile().safe<=0:
-							return
-						if! await go_direction(true,"north"):
-							if! await go_direction(true,"east"):
-								return #failed to move
-				else:
+				if card.get_tile().safe<=0:
+					return
+				if! await go_direction(true,"east"):
 					if! await go_direction(true,"north"):
-						if card.get_tile().safe<=0:
-							return
-						if! await go_direction(true,"south"):
-							if! await go_direction(true,"east"):
-								return #failed to move
-		else: #try east
-			if! await go_direction(true,"east"):
-				if north_offset_from_target>0:
+						return #failed to move
+	else:
+		if! await go_direction(true,"north"):
+			if! await go_direction(true,"west"):
+				if card.get_tile().safe<=0:
+					return
+				if! await go_direction(true,"east"):
 					if! await go_direction(true,"south"):
-						if card.get_tile().safe<=0:
-							return
-						if! await go_direction(true,"north"):
-							if! await go_direction(true,"east"):
-								return #failed to move
-				else:
-					if! await go_direction(true,"north"):
-						if card.get_tile().safe<=0:
-							return
-						if! await go_direction(true,"south"):
-							if! await go_direction(true,"east"):
-								return #failed to move
-	else: #go north or south
-		#try south
-		if north_offset_from_target>0:
-			if! await go_direction(true,"south"):
-				if east_offset_from_target>0:
-					if! await go_direction(true,"west"):
-						if card.get_tile().safe<=0:
-							return
-						if! await go_direction(true,"east"):
-							if! await go_direction(true,"north"):
-								return #failed to move
-				else:
-					if! await go_direction(true,"east"):
-						if card.get_tile().safe<=0:
-							return
-						if! await go_direction(true,"west"):
-							if! await go_direction(true,"north"):
-								return #failed to move
-		else: #try north
-			if! await go_direction(true,"north"):
-				if east_offset_from_target>0:
-					if! await go_direction(true,"west"):
-						if card.get_tile().safe<=0:
-							return
-						if! await go_direction(true,"east"):
-							if! await go_direction(true,"south"):
-								return #failed to move
-				else:
-					if! await go_direction(true,"east"):
-						if card.get_tile().safe<=0:
-							return
-						if! await go_direction(true,"west"):
-							if! await go_direction(true,"south"):
-								return #failed to move
-		return true
+						return #failed to move
+		
 
 #deprecated
 func move_direction_roll():
@@ -223,7 +170,7 @@ func go_direction(start,direction):
 		if !neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor"):
 			return
 	start = false
-	update_position(card.get_parent().get_node("Area3D").call("get_"+direction+"_neighbor").get_parent())	
+	await update_position(neighbor.get_parent())
 	if card.get_tile().safe<=-1:
 		match mode:
 			"attack":#stop on king's tile
@@ -281,16 +228,16 @@ func go_direction(start,direction):
 		if !neighbor:
 			pass
 		elif neighbor.safe<0:
-			await call("go_"+direction,false)
+			await call("go_direction",false,direction)
 		elif neighbor.call("get_"+direction+"_neighbor"):
 			if neighbor.call("get_"+direction+"_neighbor").safe<0:
-				await call("go_"+direction,false)
+				await call("go_direction",false,direction)
 			elif neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor"):
 				if neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").safe<0:
-					await call("go_"+direction,false)
+					await call("go_direction",false,direction)
 				elif neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor"):
 					if neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").safe<0:
-						await call("go_"+direction,false)
+						await call("go_direction",false,direction)
 	Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 	return true
 
@@ -461,7 +408,4 @@ func go_east(start):
 						await go_east(false)
 	return true
 
-func update_position(parent):
-	card.reparent(parent)
-	card.target_position = card.get_parent().global_position+Vector3(0,0,6)
 	
