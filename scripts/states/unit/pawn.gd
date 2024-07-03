@@ -27,6 +27,7 @@ func check_attack():
 		return true
 
 func attack(enemy):
+	Directory.game_manager.camera_target = Vector3(enemy.global_position.x,enemy.global_position.y,4)
 	Directory.play_sound("res://audio/sfx/cardhit/"+str(Directory.rng.randi_range(1,1))+".mp3",-15,.75,0.1,1)
 	update_position(enemy.get_parent())
 	enemy.hp-=card.capture_value+5
@@ -65,3 +66,21 @@ func move():
 		await go_north(true)
 	first_move = true
 	print("pawn move")
+	if card.get_tile().tile_id>20:
+		promotion()
+
+func promotion():
+	await get_tree().create_timer(.5).timeout
+	Directory.play_sound("res://audio/sfx/create.wav",5,1,0.1,1)
+	Directory.game_manager.active_tile = card.get_tile()
+	card.change_area("graveyard")
+	for promoted_card in Directory.game_manager.deck.get_children():
+		if promoted_card.piece == "queen":
+			promote.emit()
+			print("found queen to promote")
+			promoted_card.change_area("field")
+			promoted_card.get_node("StateMachine").state.moved = true
+			Directory.game_manager.camera_target = Vector3(Directory.game_manager.active_tile.global_position.x,Directory.game_manager.active_tile.global_position.y,4)
+			Directory.game_manager.arrange_board()
+			return
+	print("no queen in deck")

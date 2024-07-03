@@ -83,6 +83,9 @@ func has_attack():
 		print("no attack target")
 
 func attack(enemy):
+	if moved:
+		return
+	Directory.game_manager.camera_target = Vector3(enemy.global_position.x,enemy.global_position.y,4)
 	if Directory.rng.randi_range(0,-10)>((enemy.get_tile().safe-2)):
 		move()
 		print("abort attack")

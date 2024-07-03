@@ -7,8 +7,11 @@ func has_attack():
 	attack_target = has_horizontal_attack()
 	if attack_target:
 		return true
+	attack_target = has_diagonal_attack()
+	if attack_target:
+		return true
 
-func check_attack():
+func check_attack():#deprecated
 	var enemy
 	if moved:
 		return
@@ -59,12 +62,40 @@ func set_danger_tiles():
 			defending_pieces.append(current_neighbor.get_parent().get_child(1))
 		current_neighbor.safe -=1
 		current_neighbor = current_neighbor.get_east_neighbor()
+	
+	current_neighbor = card.get_parent().get_child(0).get_north_west_neighbor()
+	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
+		if status_neighbor(current_neighbor) == 1:
+			defending_pieces.append(current_neighbor.get_parent().get_child(1))
+		current_neighbor.safe -=1
+		current_neighbor = current_neighbor.get_north_west_neighbor()
+		
+	current_neighbor = card.get_parent().get_child(0).get_south_west_neighbor()
+	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
+		if status_neighbor(current_neighbor) == 1:
+			defending_pieces.append(current_neighbor.get_parent().get_child(1))
+		current_neighbor.safe -=1
+		current_neighbor = current_neighbor.get_south_west_neighbor()
+		
+	current_neighbor = card.get_parent().get_child(0).get_south_east_neighbor()
+	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
+		if status_neighbor(current_neighbor) == 1:
+			defending_pieces.append(current_neighbor.get_parent().get_child(1))
+		current_neighbor.safe -=1
+		current_neighbor = current_neighbor.get_south_east_neighbor()
+	
+	current_neighbor = card.get_parent().get_child(0).get_north_east_neighbor()
+	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
+		if status_neighbor(current_neighbor) == 1:
+			defending_pieces.append(current_neighbor.get_parent().get_child(1))
+		current_neighbor.safe -=1
+		current_neighbor = current_neighbor.get_north_east_neighbor()
 
 func attack(enemy):
 	if moved:
 		return
-	moved = true
 	Directory.game_manager.camera_target = Vector3(enemy.global_position.x,enemy.global_position.y,4)
+	moved = true
 	Directory.play_sound("res://audio/sfx/cardhit/"+str(Directory.rng.randi_range(1,1))+".mp3",-7,.75,0.1,1)
 	await update_position(enemy.get_parent())
 	enemy.hp-=card.capture_value+4
@@ -93,26 +124,38 @@ func move():
 	for _card in Directory.game_manager.live_pieces:
 		if !_card.enemy and _card.get_tile().safe>=1 and _card != card:
 			target = _card
-	print("rook of "+card.get_parent().name+" moves in "+mode+" mode targeting "+str(target)+".")
+	print("queen of "+card.get_parent().name+" moves in "+mode+" mode targeting "+str(target.display)+".")
 	east_offset_from_target = card.get_tile().tile_id%5-target.get_tile().tile_id%5
 	north_offset_from_target = (card.get_tile().tile_id-1)/5-(target.get_tile().tile_id-1)/5
 	
-	if north_offset_from_target>0:
+	if north_offset_from_target >0:
 		if! await go_direction(true,"south"):
-			if! await go_direction(true,"west"):
-				if card.get_tile().safe<=0:
-					return
-				if! await go_direction(true,"east"):
-					if! await go_direction(true,"north"):
-						return #failed to move
+			if east_offset_from_target >0:
+				if! await go_direction(true,"south_west"):
+					if! await go_direction(true,"south_east"):
+						if! await go_direction(true,"west"):
+							if! await go_direction(true,"east"):
+								return
+			else:
+				if! await go_direction(true,"south_east"):
+					if! await go_direction(true,"south_west"):
+						if! await go_direction(true,"east"):
+							if! await go_direction(true,"west"):
+								return
 	else:
 		if! await go_direction(true,"north"):
-			if! await go_direction(true,"west"):
-				if card.get_tile().safe<=0:
-					return
-				if! await go_direction(true,"east"):
-					if! await go_direction(true,"south"):
-						return #failed to move
+			if east_offset_from_target >0:
+				if! await go_direction(true,"north_west"):
+					if! await go_direction(true,"north_east"):
+						if! await go_direction(true,"west"):
+							if! await go_direction(true,"east"):
+								return
+			else:
+				if! await go_direction(true,"north_east"):
+					if! await go_direction(true,"north_west"):
+						if! await go_direction(true,"east"):
+							if! await go_direction(true,"west"):
+								return
 		
 
 #deprecated
@@ -145,9 +188,9 @@ func move_direction_roll():
 
 func go_direction(start,direction):
 	if start == false:
-		print("rook of "+card.get_parent().name+" has continued moving in the "+direction+" direction!")
+		print("queen of "+card.get_parent().name+" has continued moving in the "+direction+" direction!")
 	else:
-		print("rook of "+card.get_parent().name+" has begun moving in the "+direction+" direction...")
+		print("queen of "+card.get_parent().name+" has begun moving in the "+direction+" direction...")
 	if card.area!="field":
 		return
 	var neighbor = card.get_tile().call("get_"+direction+"_neighbor")
@@ -182,6 +225,18 @@ func go_direction(start,direction):
 					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 					return true
 				if get_first_enemy_north():
+					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
+					return true
+				if get_first_enemy_north_east():
+					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
+					return true
+				if get_first_enemy_north_west():
+					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
+					return true
+				if get_first_enemy_south_east():
+					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
+					return true
+				if get_first_enemy_south_west():
 					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 					return true
 			"defense":#stop a tile early

@@ -64,7 +64,10 @@ func set_danger_tiles():
 		current_neighbor = current_neighbor.get_north_east_neighbor()
 
 func attack(enemy):
+	if moved:
+		return
 	print("bishop attacks "+str(enemy))
+	Directory.game_manager.camera_target = Vector3(enemy.global_position.x,enemy.global_position.y,4)
 	Directory.play_sound("res://audio/sfx/cardhit/"+str(Directory.rng.randi_range(1,1))+".mp3",-7,.75,0.1,1)	
 	await update_position(enemy.get_parent())
 	enemy.hp-=card.capture_value+4

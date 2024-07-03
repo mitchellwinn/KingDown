@@ -158,11 +158,16 @@ func change_area(new_area):
 			
 		"field":
 			if !enemy:
-				Directory.play_sound("res://audio/sfx/cardflick/"+str(Directory.rng.randi_range(1,8))+".mp3",0,.9,0.05,1)
 				if Directory.game_manager.budget>=capture_value and area == "hand":
+					Directory.play_sound("res://audio/sfx/cardflick/"+str(Directory.rng.randi_range(1,8))+".mp3",0,.9,0.05,1)
 					area = new_area
 					Directory.game_manager.budget -= capture_value
 					Directory.game_manager.update_sideboard()
+					reparent(Directory.game_manager.board.get_node(Directory.game_manager.active_tile.get_parent().name.substr(0,2)))
+					Directory.game_manager.live_pieces.append(self)
+				elif area == "deck":
+					area = new_area
+					change_sprite(identifying_name)
 					reparent(Directory.game_manager.board.get_node(Directory.game_manager.active_tile.get_parent().name.substr(0,2)))
 					Directory.game_manager.live_pieces.append(self)
 				else:
@@ -184,6 +189,7 @@ func change_area(new_area):
 	Directory.game_manager.arrange_deck.call_deferred()
 	Directory.game_manager.arrange_graveyard.call_deferred()
 	Directory.game_manager.arrange_baubles.call_deferred()
+	
 func change_sprite(sprite):
 	var image = Image.load_from_file("res://sprites/"+sprite+".png")
 	var texture = ImageTexture.create_from_image(image)

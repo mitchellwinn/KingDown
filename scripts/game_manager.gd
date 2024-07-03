@@ -89,6 +89,8 @@ func _physics_process(delta):
 				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 
 func arrange_camera():
+	while card_effect_resolving:
+		await get_tree().physics_frame
 	match phase:
 		"hand":
 			camera_target = Vector3(0,-2,4)
@@ -106,10 +108,12 @@ func create_deck():
 	var i = 0
 	while i<52:
 		var num = Directory.rng.randi_range(1,100)
-		if num>66:
+		if num>50:
 			spawn_card("blue_pawn","deck",false)
-		elif num>33:
-			spawn_card("blue_rook","deck",false)
+		elif num>0:
+			spawn_card("blue_queen","deck",false)
+		elif num>25:
+			spawn_card("blue_queen","deck",false)
 		elif num>0:
 			spawn_card("blue_bishop","deck",false)
 		i+=1
