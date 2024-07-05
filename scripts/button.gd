@@ -46,6 +46,8 @@ func _process(delta):
 			pass
 			if Directory.game_manager.gold >= get_parent().cost:
 				sprite.modulate = Color(1,1,1,1)
+				if Directory.game_manager.baubles.get_child_count()>=6:
+					return
 				if Input.is_action_just_pressed("select") and Directory.game_manager.hovering_button == self and !pressed and get_parent().selected and get_parent().area == "shop":
 					outline.visible = false
 					pressed = true

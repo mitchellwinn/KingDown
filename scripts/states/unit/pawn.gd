@@ -87,6 +87,7 @@ func promotion():
 			Directory.game_manager.active_tile = card.get_tile()
 			card.change_area("graveyard")
 			promoted_card.change_area("field")
+			promoted_card.in_play = true
 			promoted_card.get_node("StateMachine").state.moved = true
 			Directory.game_manager.camera_target = Vector3(Directory.game_manager.active_tile.global_position.x,Directory.game_manager.active_tile.global_position.y,4)
 			Directory.game_manager.arrange_board()

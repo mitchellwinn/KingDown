@@ -125,7 +125,7 @@ func move():
 		mode = "defense"
 	target = Directory.game_manager.boss
 	for _card in Directory.game_manager.live_pieces:
-		if !_card.enemy and _card.get_tile().safe>=1 and _card != card:
+		if !_card.enemy and _card.get_tile().safe>=0 and _card != card:
 			target = _card
 	print("queen of "+card.get_parent().name+" moves in "+mode+" mode targeting "+str(target.display)+".")
 	east_offset_from_target = card.get_tile().tile_id%5-target.get_tile().tile_id%5
@@ -249,19 +249,19 @@ func go_direction(start,direction):
 				if target != Directory.game_manager.boss:
 					match direction:
 						"north":
-							if floor((card.get_tile().tile_id)/5.1)==floor(target.get_tile().tile_id/5.1):
+							if floor((card.get_tile().tile_id)/5.1)==floor((target.get_tile().tile_id+1)/5.1):
 								Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 								return true
 						"south":
-							if floor((card.get_tile().tile_id)/5.1)==floor(target.get_tile().tile_id/5.1):
+							if floor((card.get_tile().tile_id)/5.1)==floor((target.get_tile().tile_id-1)/5.1):
 								Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 								return true
 						"east":
-							if floor(card.get_tile().tile_id%5)==floor((target.get_tile().tile_id)%5):
+							if floor(card.get_tile().tile_id%5)==floor((target.get_tile().tile_id+1)%5):
 								Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 								return true
 						"west":
-							if floor(card.get_tile().tile_id%5)==floor((target.get_tile().tile_id)%5):
+							if floor(card.get_tile().tile_id%5)==floor((target.get_tile().tile_id-1)%5):
 								Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 								return true
 				else:

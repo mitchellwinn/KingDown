@@ -61,6 +61,8 @@ func start_round():
 	create_boss()
 	if round == 1:
 		create_deck()
+	deck.get_children().shuffle()
+	arrange_deck()
 	arrange_minimap()
 	budget = 25+Directory.budget_algorithm()
 	update_sideboard()
@@ -176,7 +178,9 @@ func change_phase(new_phase):
 			commence.pressed = false
 			commence._on_toggle()
 		"win":
-			await get_tree().create_timer(.75).timeout
+			while card_effect_resolving:
+				await get_tree().create_timer(.25).timeout
+			await get_tree().create_timer(.05).timeout
 			round_end.emit()
 			await get_tree().create_timer(.5).timeout
 			while card_effect_resolving:
@@ -367,7 +371,10 @@ func arrange_baubles():
 	var i = 0
 	#reversed_deck.reverse()
 	for card in baubles.get_children():
-		card.target_position = baubles.global_position+Vector3(0,1*i,.1*i-20)
+		if i<3:
+			card.target_position = baubles.global_position+Vector3(-.25,1*i,.1*i-20)
+		else:
+			card.target_position = baubles.global_position+Vector3(.75,1*(i-3),.1*i-20)
 		i+=1
 		
 func arrange_graveyard():

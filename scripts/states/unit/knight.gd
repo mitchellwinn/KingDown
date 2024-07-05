@@ -114,7 +114,7 @@ func move():
 		mode = "defense"
 	target = Directory.game_manager.boss
 	for _card in Directory.game_manager.live_pieces:
-		if !_card.enemy and _card.get_tile().safe>=1 and _card != card:
+		if !_card.enemy and _card.get_tile().safe>=0 and _card != card:
 			target = _card
 	print("knight of "+card.get_parent().name+" moves in "+mode+" mode targeting "+str(target.display)+".")
 	east_offset_from_target = card.get_tile().tile_id%5-target.get_tile().tile_id%5
