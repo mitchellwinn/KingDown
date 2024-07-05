@@ -15,8 +15,9 @@ var selected:= false
 var in_play:= false
 var cost: int
 var uid: int
-
+var damage: int
 var hp: int
+var invulnerability := 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -34,6 +35,7 @@ func initialize():
 	display = card_list[identifying_name]["display"]
 	description = card_list[identifying_name]["description"]
 	cost = card_list[identifying_name]["cost"]
+	damage = card_list[identifying_name]["damage"]
 	$DescriptionWindow/Name.text = display
 	$DescriptionWindow/Description.text = description
 	uid = Directory.rng.randi_range(-99999,99999)

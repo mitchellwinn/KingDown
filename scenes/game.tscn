@@ -510,176 +510,192 @@ texture = ExtResource("2_s7vf0")
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.322189, -0.320515, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="b1" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.160219, -0.320515, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="c1" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.00177288, -0.320515, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="d1" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.160199, -0.320515, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="e1" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.319413, -0.320515, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="a2" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.322189, -0.160569, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="b2" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.160219, -0.160569, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="c2" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.00177288, -0.160569, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="d2" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.160199, -0.160569, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="e2" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.319413, -0.160569, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="a3" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.322189, -3.14321e-06, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="b3" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.160219, -3.14321e-06, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="c3" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.00177288, -3.14321e-06, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="d3" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.160199, -3.14321e-06, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="e3" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.319413, -3.14321e-06, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="a4" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.322189, 0.159973, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="b4" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.160219, 0.159973, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="c4" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.00177288, 0.159973, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="d4" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.160199, 0.159973, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="e4" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.319413, 0.159973, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="a5" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.322189, 0.319949, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="b5" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.160219, 0.319949, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="c5" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, 0.00177288, 0.319949, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="d5" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.160199, 0.319949, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
 
 [node name="e5" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 2.84217e-13, 0, 1, 0, -2.84217e-13, 0, 1, -0.319413, 0.319949, 0.0229397)
 alpha_cut = 1
 alpha_scissor_threshold = 0.103
-texture_filter = 5
+texture_filter = 0
 texture = ExtResource("3_64q2y")
+
+[node name="RoundLabel" type="Label3D" parent="Camera3D/Minimap"]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, -0.602, 0.078)
+pixel_size = 0.01
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.53
+alpha_hash_scale = 0.0
+alpha_antialiasing_edge = 0.11
+texture_filter = 0
+outline_modulate = Color(0.180392, 0, 0, 1)
+text = "Round 1
+King Canute"
+font = ExtResource("5_2r282")
+font_size = 19
+outline_size = 5
 
 [node name="Minimap2" type="Sprite3D" parent="Camera3D/Minimap"]
 transform = Transform3D(1, 0, 1.42109e-14, 0, 1, 0, -1.42109e-14, 0, 1, 0.0208335, -0.0208333, 0.0781248)
@@ -1623,19 +1639,19 @@ outline_size = 5
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 
 [node name="Single1" type="Node3D" parent="Shop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 0)
 
 [node name="Single2" type="Node3D" parent="Shop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 0.2)
 
 [node name="Single3" type="Node3D" parent="Shop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0.3)
 
 [node name="Single4" type="Node3D" parent="Shop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 0.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.4)
 
 [node name="Single5" type="Node3D" parent="Shop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 0.5)
 
 [node name="GoldPile" type="Node3D" parent="Shop"]
 transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -3.76, -3.52, 0)
@@ -1651,12 +1667,12 @@ transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -0.469934, -2.15777,
 
 [node name="NextRound" type="Sprite3D" parent="ShopConstants"]
 transform = Transform3D(1.04167, 0, 0, 0, 1.04167, 0, 0, 0, 1.04167, 0.49, -3.044, 0)
-visible = false
 modulate = Color(0.509804, 0.509804, 0.509804, 1)
 alpha_cut = 1
 texture_filter = 0
 texture = ExtResource("14_pujt3")
 hframes = 3
+frame = 2
 
 [node name="Area3D" type="Area3D" parent="ShopConstants/NextRound" node_paths=PackedStringArray("sprite", "outline")]
 script = ExtResource("5_5lysr")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://l4w04v37cfpu"]
+[gd_scene load_steps=29 format=3 uid="uid://l4w04v37cfpu"]
 
 [ext_resource type="Texture2D" uid="uid://djljwv8t4ki68" path="res://sprites/excalibur.png" id="1_6y6rm"]
 [ext_resource type="Script" path="res://scripts/card.gd" id="2_ujo4m"]
@@ -14,7 +14,6 @@
 [ext_resource type="FontFile" uid="uid://y8v8ttnxc0ms" path="res://alagard.ttf" id="10_cypk5"]
 [ext_resource type="Texture2D" uid="uid://dj7scm6i4dnmk" path="res://sprites/buy_button.png" id="11_6uclo"]
 [ext_resource type="Script" path="res://scripts/button.gd" id="12_g2t6m"]
-[ext_resource type="FontFile" uid="uid://xttwmf7eew3a" path="res://slkscr.ttf" id="14_mmly2"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_pky6t"]
 size = Vector2(0.72, 0.96)
@@ -242,7 +241,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [true, true]
+"values": [true, false]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -318,6 +317,7 @@ script = ExtResource("2_ujo4m")
 
 [node name="ProcText" type="Label3D" parent="."]
 transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.457, 0.67)
+visible = false
 layers = 4
 sorting_use_aabb_center = false
 pixel_size = 0.01
@@ -497,7 +497,6 @@ button_type = "buy"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BuyArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0571728, 0)
 shape = SubResource("BoxShape3D_5kvei")
-disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="BuyArea"]
 libraries = {
@@ -521,6 +520,7 @@ metadata/_edit_group_ = true
 
 [node name="Name" type="Label3D" parent="DescriptionWindow"]
 transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -3.62716e-08, 0.130451, 0.00123686)
+visible = false
 layers = 4
 sorting_use_aabb_center = false
 pixel_size = 0.01
@@ -541,6 +541,7 @@ autowrap_mode = 3
 
 [node name="Description" type="Label3D" parent="DescriptionWindow"]
 transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -3.62716e-08, 0.0555012, 0.00123686)
+visible = false
 layers = 4
 sorting_use_aabb_center = false
 pixel_size = 0.01
@@ -554,15 +555,14 @@ modulate = Color(0, 0, 0, 1)
 outline_modulate = Color(0, 0, 0, 0.0941176)
 text = "Plus 1 Gold if in-play
 when round ends"
-font = ExtResource("14_mmly2")
-font_size = 9
+font = ExtResource("10_cypk5")
+font_size = 14
 outline_size = 5
 vertical_alignment = 0
 autowrap_mode = 3
 
 [node name="Buy" type="Sprite3D" parent="DescriptionWindow"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00991321)
-visible = false
 alpha_cut = 1
 texture_filter = 0
 texture = ExtResource("11_6uclo")

@@ -54,7 +54,20 @@ func go_east(start):
 		return false
 	await update_position(card.get_parent().get_child(0).get_east_neighbor().get_parent())
 	return true
-	
+
+func get_neighbor_in_L(dir1,dir2,dir3):
+	var card_tile = card.get_tile()
+	var neighbor = card_tile.call("get_"+dir1+"_neighbor")
+	if !neighbor:
+		return
+	neighbor = neighbor.call("get_"+dir2+"_neighbor")
+	if !neighbor:
+		return
+	neighbor = neighbor.call("get_"+dir3+"_neighbor")
+	if !neighbor:
+		return
+	return neighbor
+
 func go_north_west(start):
 	var neighbor = card.get_parent().get_child(0).get_north_west_neighbor()
 	if !neighbor:
@@ -373,6 +386,34 @@ func has_diagonal_attack():
 	if enemy:
 		return enemy
 
+func has_L_attack():
+	var neighbor = get_neighbor_in_L("north","north","east")
+	if status_neighbor(neighbor)==2:
+		return neighbor.get_parent().get_child(1)
+	neighbor = get_neighbor_in_L("north","north","west")
+	if status_neighbor(neighbor)==2:
+		return neighbor.get_parent().get_child(1)		
+	neighbor = get_neighbor_in_L("north","east","east")
+	if status_neighbor(neighbor)==2:
+		return neighbor.get_parent().get_child(1)		
+	neighbor = get_neighbor_in_L("north","west","west")
+	if status_neighbor(neighbor)==2:
+		return neighbor.get_parent().get_child(1)		
+	
+	neighbor = get_neighbor_in_L("south","south","east")
+	if status_neighbor(neighbor)==2:
+		return neighbor.get_parent().get_child(1)
+	neighbor = get_neighbor_in_L("south","south","west")
+	if status_neighbor(neighbor)==2:
+		return neighbor.get_parent().get_child(1)		
+	neighbor = get_neighbor_in_L("south","east","east")
+	if status_neighbor(neighbor)==2:
+		return neighbor.get_parent().get_child(1)		
+	neighbor = get_neighbor_in_L("south","west","west")
+	if status_neighbor(neighbor)==2:
+		return neighbor.get_parent().get_child(1)	
+	return false
+
 func has_horizontal_attack():
 	var enemy
 	if moved:
@@ -392,9 +433,4 @@ func has_horizontal_attack():
 	return false
 
 func abort_move():
-	var abort_score = 0
-	abort_score -= card.get_tile().safe*2
-	abort_score -= Directory.game_manager.boss.get_tile().safe
-	if Directory.rng.randi_range(1,5)<=abort_score:
-			print("abort move")
-			return true
+	return false

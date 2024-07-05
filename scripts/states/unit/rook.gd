@@ -32,32 +32,35 @@ func check_attack():
 		
 func set_danger_tiles():
 	defending_pieces = []
+	var safety_bonus = 2
+	if moved:
+		safety_bonus = 5
 	var current_neighbor = card.get_parent().get_child(0).get_north_neighbor()
 	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
 		if status_neighbor(current_neighbor) == 1:
 			defending_pieces.append(current_neighbor.get_parent().get_child(1))
-		current_neighbor.safe -=1
+		current_neighbor.safe -=safety_bonus
 		current_neighbor = current_neighbor.get_north_neighbor()
 		
 	current_neighbor = card.get_parent().get_child(0).get_south_neighbor()
 	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
 		if status_neighbor(current_neighbor) == 1:
 			defending_pieces.append(current_neighbor.get_parent().get_child(1))
-		current_neighbor.safe -=1
+		current_neighbor.safe -=safety_bonus
 		current_neighbor = current_neighbor.get_south_neighbor()
 		
 	current_neighbor = card.get_parent().get_child(0).get_west_neighbor()
 	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
 		if status_neighbor(current_neighbor) == 1:
 			defending_pieces.append(current_neighbor.get_parent().get_child(1))
-		current_neighbor.safe -=1
+		current_neighbor.safe -=safety_bonus
 		current_neighbor = current_neighbor.get_west_neighbor()
 	
 	current_neighbor = card.get_parent().get_child(0).get_east_neighbor()
 	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
 		if status_neighbor(current_neighbor) == 1:
 			defending_pieces.append(current_neighbor.get_parent().get_child(1))
-		current_neighbor.safe -=1
+		current_neighbor.safe -=safety_bonus
 		current_neighbor = current_neighbor.get_east_neighbor()
 
 func attack(enemy):
@@ -67,7 +70,7 @@ func attack(enemy):
 	Directory.game_manager.camera_target = Vector3(enemy.global_position.x,enemy.global_position.y,4)
 	Directory.play_sound("res://audio/sfx/cardhit/"+str(Directory.rng.randi_range(1,1))+".mp3",-7,.75,0.1,1)
 	await update_position(enemy.get_parent())
-	enemy.hp-=card.capture_value+4
+	enemy.hp-=Directory.damage_algorithm(card)
 	Directory.game_manager.update_sideboard()
 	Directory.game_manager.get_node("AnimationPlayer").play("cam_impact_medium")
 	Directory.game_manager.get_node("AnimationPlayer").seek(0)
@@ -98,22 +101,59 @@ func move():
 	north_offset_from_target = (card.get_tile().tile_id-1)/5-(target.get_tile().tile_id-1)/5
 	
 	if north_offset_from_target>0:
-		if! await go_direction(true,"south"):
-			if! await go_direction(true,"west"):
-				if card.get_tile().safe<=0:
-					return
-				if! await go_direction(true,"east"):
-					if! await go_direction(true,"north"):
-						return #failed to move
-	else:
-		if! await go_direction(true,"north"):
-			if! await go_direction(true,"west"):
-				if card.get_tile().safe<=0:
-					return
+		if abs(east_offset_from_target)>abs(north_offset_from_target)+1:
+			if east_offset_from_target>0:
+				if! await go_direction(true,"west"):
+					if! await go_direction(true,"south"):
+						if! await go_direction(true,"north"):
+							if! await go_direction(true,"east"):
+								return #failed to move
+			else:
 				if! await go_direction(true,"east"):
 					if! await go_direction(true,"south"):
-						return #failed to move
-		
+						if! await go_direction(true,"north"):
+							if! await go_direction(true,"west"):
+								return #failed to move
+		else:
+			if east_offset_from_target>0:
+				if! await go_direction(true,"south"):
+					if! await go_direction(true,"west"):
+						if! await go_direction(true,"east"):
+							if! await go_direction(true,"north"):
+								return #failed to move
+			else:
+				if! await go_direction(true,"south"):
+					if! await go_direction(true,"east"):
+						if! await go_direction(true,"west"):
+							if! await go_direction(true,"north"):
+								return #failed to move
+	else:
+		if abs(east_offset_from_target)>abs(north_offset_from_target)+1:
+			if east_offset_from_target>0:
+				if! await go_direction(true,"west"):
+					if! await go_direction(true,"north"):
+						if! await go_direction(true,"south"):
+							if! await go_direction(true,"east"):
+								return #failed to move
+			else:
+				if! await go_direction(true,"east"):
+					if! await go_direction(true,"north"):
+						if! await go_direction(true,"south"):
+							if! await go_direction(true,"west"):
+								return #failed to move
+		else:
+			if east_offset_from_target>0:
+				if! await go_direction(true,"north"):
+					if! await go_direction(true,"west"):
+						if! await go_direction(true,"east"):
+							if! await go_direction(true,"south"):
+								return #failed to move
+			else:
+				if! await go_direction(true,"north"):
+					if! await go_direction(true,"east"):
+						if! await go_direction(true,"west"):
+							if! await go_direction(true,"south"):
+								return #failed to move
 
 #deprecated
 func move_direction_roll():
@@ -160,7 +200,7 @@ func go_direction(start,direction):
 		moved = true
 		Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 		return true
-	if neighbor.safe>=0 and start:
+	if neighbor.safe>=-1 and start:
 		if !neighbor.call("get_"+direction+"_neighbor"):
 			return
 		if !neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor"):
@@ -225,13 +265,13 @@ func go_direction(start,direction):
 		neighbor = card.get_tile().call("get_"+direction+"_neighbor")
 		if !neighbor:
 			pass
-		elif neighbor.safe<0:
+		elif neighbor.safe<-1:
 			await call("go_direction",false,direction)
 		elif neighbor.call("get_"+direction+"_neighbor"):
-			if neighbor.call("get_"+direction+"_neighbor").safe<0:
+			if neighbor.call("get_"+direction+"_neighbor").safe<-1:
 				await call("go_direction",false,direction)
 			elif neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor"):
-				if neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").safe<0:
+				if neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").safe<-1:
 					await call("go_direction",false,direction)
 				elif neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor"):
 					if neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").safe<0:

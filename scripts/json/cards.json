@@ -7,7 +7,8 @@
 		"capture_value": 5,
 		"hp" : -1,
 		"description": "Knights Level-Up on\nPawn promotion",
-		"cost": 7
+		"cost": 7,
+		"damage": -1
 	},
 	"cursed_cloth": {
 		"display": "Cursed Cloth",
@@ -17,9 +18,31 @@
 		"capture_value": 3,
 		"hp" : -1,
 		"description": "Chance to survive hit\nbased on Level",
-		"cost": 5
+		"cost": 5,
+		"damage": -1
 	},
-	
+	"stim_pill": {
+		"display": "Stim Pill",
+		"name": "stim_pill",
+		"piece": "bauble",
+		"archetype": "pill",
+		"capture_value": 3,
+		"hp" : -1,
+		"description": "MULT + 5\ndecreases steadily",
+		"cost": 7,
+		"damage": -1
+	},
+	"teamwork": {
+		"display": "Teamwork",
+		"name": "teamwork",
+		"piece": "bauble",
+		"archetype": "tactic",
+		"capture_value": 3,
+		"hp" : -1,
+		"description": "MULT + 3 for each\nconsecutive attack",
+		"cost": 7,
+		"damage": -1
+	},
 	"pawn_of_plenty": {
 		"display": "Pawn of Plenty",
 		"name": "pawn_of_plenty",
@@ -28,7 +51,8 @@
 		"capture_value": 1,
 		"hp" : 1,
 		"description": "Plus 20 Budget\nwhen promoted",
-		"cost": 7
+		"cost": 7,
+		"damage": 5
 	},
 	"blue_pawn": {
 		"display": "Blue Pawn",
@@ -38,7 +62,8 @@
 		"capture_value": 1,
 		"hp" : 1,
 		"description": "Plus 2 Gold if in-play\nwhen round ends",
-		"cost": 2
+		"cost": 2,
+		"damage": 5
 	},
 	"blue_bishop": {
 		"display": "Blue Bishop",
@@ -48,7 +73,8 @@
 		"capture_value": 3,
 		"hp" : 1,
 		"description": "Plus 2 Gold if in-play\nwhen round ends",
-		"cost": 2
+		"cost": 2,
+		"damage": 8
 	},
 	"blue_knight": {
 		"display": "Blue Knight",
@@ -58,7 +84,8 @@
 		"capture_value": 3,
 		"hp" : 1,
 		"description": "Plus 2 Gold if in-play\nwhen round ends",
-		"cost": 2
+		"cost": 2,
+		"damage": 9
 	},
 	"blue_rook": {
 		"display": "Blue Rook",
@@ -68,7 +95,8 @@
 		"capture_value": 5,
 		"hp" : 1,
 		"description": "Plus 2 Gold if in-play\nwhen round ends",
-		"cost": 2
+		"cost": 2,
+		"damage": 12
 	},
 	"blue_queen": {
 		"display": "Blue Queen",
@@ -78,7 +106,8 @@
 		"capture_value": 9,
 		"hp" : 1,
 		"description": "Plus 2 Gold if in-play\nwhen round ends",
-		"cost": 3
+		"cost": 3,
+		"damage": 20
 	},
 	"king_canute": {
 		"display": "King Canute",
@@ -88,6 +117,7 @@
 		"capture_value": 20,
 		"hp" : 13,
 		"description": "King of Englad when\n the Danes invaded",
-		"cost": 999
+		"cost": 999,
+		"damage": -1
 	}
 }

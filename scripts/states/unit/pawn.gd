@@ -30,7 +30,7 @@ func attack(enemy):
 	Directory.game_manager.camera_target = Vector3(enemy.global_position.x,enemy.global_position.y,4)
 	Directory.play_sound("res://audio/sfx/cardhit/"+str(Directory.rng.randi_range(1,1))+".mp3",-15,.75,0.1,1)
 	update_position(enemy.get_parent())
-	enemy.hp-=card.capture_value+5
+	enemy.hp-=Directory.damage_algorithm(card)
 	Directory.game_manager.update_sideboard()
 	Directory.game_manager.get_node("AnimationPlayer").play("cam_impact_light")
 	Directory.game_manager.get_node("AnimationPlayer").seek(0)
@@ -55,10 +55,12 @@ func move():
 	if abort_move():
 		return
 	if status_north_east()==1:
-		if card.get_tile().get_north_east_neighbor().get_parent().get_child(1).get_node("StateMachine").state.moved:
+		var protecting = card.get_tile().get_north_east_neighbor().get_parent().get_child(1).get_node("StateMachine").state
+		if protecting.moved and protecting.card.get_tile().safe>=0:
 			return
 	if status_north_west()==1:
-		if card.get_tile().get_north_west_neighbor().get_parent().get_child(1).get_node("StateMachine").state.moved:
+		var protecting = card.get_tile().get_north_west_neighbor().get_parent().get_child(1).get_node("StateMachine").state
+		if protecting.moved and protecting.card.get_tile().safe>=0:
 			return
 	if await go_north(true):
 		Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
@@ -70,17 +72,24 @@ func move():
 		promotion()
 
 func promotion():
+	promote.emit()
+	Directory.game_manager.pawn_promoted.emit()
 	await get_tree().create_timer(.5).timeout
-	Directory.play_sound("res://audio/sfx/create.wav",5,1,0.1,1)
-	Directory.game_manager.active_tile = card.get_tile()
-	card.change_area("graveyard")
+	while Directory.game_manager.card_effect_resolving:
+		await await get_tree().create_timer(.25).timeout
+	Directory.play_sound("res://audio/sfx/create.wav",-15,1,0.1,1)
 	for promoted_card in Directory.game_manager.deck.get_children():
 		if promoted_card.piece == "queen":
-			promote.emit()
+			match card.archetype:
+				"plenty":
+					await get_tree().create_timer(1).timeout
 			print("found queen to promote")
+			Directory.game_manager.active_tile = card.get_tile()
+			card.change_area("graveyard")
 			promoted_card.change_area("field")
 			promoted_card.get_node("StateMachine").state.moved = true
 			Directory.game_manager.camera_target = Vector3(Directory.game_manager.active_tile.global_position.x,Directory.game_manager.active_tile.global_position.y,4)
 			Directory.game_manager.arrange_board()
 			return
+	card.change_area("graveyard")
 	print("no queen in deck")

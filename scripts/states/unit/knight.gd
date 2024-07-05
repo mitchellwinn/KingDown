@@ -4,14 +4,11 @@ var check_mate_escape_iterator = 0
 
 func has_attack():
 	attack_target = false
-	attack_target = has_horizontal_attack()
-	if attack_target:
-		return true
-	attack_target = has_diagonal_attack()
+	attack_target = has_L_attack()
 	if attack_target:
 		return true
 
-func check_attack():#deprecated
+func check_attack(): #deprecated
 	var enemy
 	if moved:
 		return
@@ -34,71 +31,63 @@ func check_attack():#deprecated
 	return false
 		
 func set_danger_tiles():
+	defending_pieces = []
 	var safety_bonus = 2
 	if moved:
 		safety_bonus = 5
-	defending_pieces = []
-	var current_neighbor = card.get_parent().get_child(0).get_north_neighbor()
-	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
+	var current_neighbor = get_neighbor_in_L("north","north","east")
+	if status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
 		if status_neighbor(current_neighbor) == 1:
 			defending_pieces.append(current_neighbor.get_parent().get_child(1))
 		current_neighbor.safe -=safety_bonus
-		current_neighbor = current_neighbor.get_north_neighbor()
 		
-	current_neighbor = card.get_parent().get_child(0).get_south_neighbor()
-	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
+	current_neighbor = get_neighbor_in_L("north","north","west")
+	if status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
 		if status_neighbor(current_neighbor) == 1:
 			defending_pieces.append(current_neighbor.get_parent().get_child(1))
 		current_neighbor.safe -=safety_bonus
-		current_neighbor = current_neighbor.get_south_neighbor()
 		
-	current_neighbor = card.get_parent().get_child(0).get_west_neighbor()
-	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
+	current_neighbor = get_neighbor_in_L("north","east","east")
+	if status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
 		if status_neighbor(current_neighbor) == 1:
 			defending_pieces.append(current_neighbor.get_parent().get_child(1))
 		current_neighbor.safe -=safety_bonus
-		current_neighbor = current_neighbor.get_west_neighbor()
-	
-	current_neighbor = card.get_parent().get_child(0).get_east_neighbor()
-	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
-		if status_neighbor(current_neighbor) == 1:
-			defending_pieces.append(current_neighbor.get_parent().get_child(1))
-		current_neighbor.safe -=safety_bonus
-		current_neighbor = current_neighbor.get_east_neighbor()
-	
-	current_neighbor = card.get_parent().get_child(0).get_north_west_neighbor()
-	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
-		if status_neighbor(current_neighbor) == 1:
-			defending_pieces.append(current_neighbor.get_parent().get_child(1))
-		current_neighbor.safe -=safety_bonus
-		current_neighbor = current_neighbor.get_north_west_neighbor()
 		
-	current_neighbor = card.get_parent().get_child(0).get_south_west_neighbor()
-	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
+	current_neighbor = get_neighbor_in_L("north","west","west")
+	if status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
 		if status_neighbor(current_neighbor) == 1:
 			defending_pieces.append(current_neighbor.get_parent().get_child(1))
 		current_neighbor.safe -=safety_bonus
-		current_neighbor = current_neighbor.get_south_west_neighbor()
 		
-	current_neighbor = card.get_parent().get_child(0).get_south_east_neighbor()
-	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
+	current_neighbor = get_neighbor_in_L("south","south","east")
+	if status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
 		if status_neighbor(current_neighbor) == 1:
 			defending_pieces.append(current_neighbor.get_parent().get_child(1))
 		current_neighbor.safe -=safety_bonus
-		current_neighbor = current_neighbor.get_south_east_neighbor()
-	
-	current_neighbor = card.get_parent().get_child(0).get_north_east_neighbor()
-	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
+		
+	current_neighbor = get_neighbor_in_L("south","east","east")
+	if status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
 		if status_neighbor(current_neighbor) == 1:
 			defending_pieces.append(current_neighbor.get_parent().get_child(1))
 		current_neighbor.safe -=safety_bonus
-		current_neighbor = current_neighbor.get_north_east_neighbor()
+		
+	current_neighbor = get_neighbor_in_L("south","south","west")
+	if status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
+		if status_neighbor(current_neighbor) == 1:
+			defending_pieces.append(current_neighbor.get_parent().get_child(1))
+		current_neighbor.safe -=safety_bonus
+		
+	current_neighbor = get_neighbor_in_L("south","west","west")
+	if status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
+		if status_neighbor(current_neighbor) == 1:
+			defending_pieces.append(current_neighbor.get_parent().get_child(1))
+		current_neighbor.safe -=safety_bonus
 
 func attack(enemy):
 	if moved:
 		return
-	Directory.game_manager.camera_target = Vector3(enemy.global_position.x,enemy.global_position.y,4)
 	moved = true
+	Directory.game_manager.camera_target = Vector3(enemy.global_position.x,enemy.global_position.y,4)
 	Directory.play_sound("res://audio/sfx/cardhit/"+str(Directory.rng.randi_range(1,1))+".mp3",-7,.75,0.1,1)
 	await update_position(enemy.get_parent())
 	enemy.hp-=Directory.damage_algorithm(card)
@@ -127,76 +116,84 @@ func move():
 	for _card in Directory.game_manager.live_pieces:
 		if !_card.enemy and _card.get_tile().safe>=1 and _card != card:
 			target = _card
-	print("queen of "+card.get_parent().name+" moves in "+mode+" mode targeting "+str(target.display)+".")
+	print("knight of "+card.get_parent().name+" moves in "+mode+" mode targeting "+str(target.display)+".")
 	east_offset_from_target = card.get_tile().tile_id%5-target.get_tile().tile_id%5
 	north_offset_from_target = (card.get_tile().tile_id-1)/5-(target.get_tile().tile_id-1)/5
 	
-	if north_offset_from_target >0:			
-		if east_offset_from_target >0:
-			if! await go_direction(true,"south_west"):
-				if! await go_direction(true,"south"):
-					if! await go_direction(true,"south_east"):
-						if! await go_direction(true,"west"):
-							if! await go_direction(true,"east"):
-								return
-
+	if north_offset_from_target<0:
+		if east_offset_from_target<0:
+			if await go_in_L("north","east","south","west"):
+				return true
 		else:
-			if! await go_direction(true,"south_east"):
-				if! await go_direction(true,"south"):
-					if! await go_direction(true,"south_west"):
-						if! await go_direction(true,"east"):
-							if! await go_direction(true,"west"):
-								return
+			if await go_in_L("north","west","south","east"):
+				return true
 	else:
-		if east_offset_from_target >0:
-			if! await go_direction(true,"north_west"):
-				if! await go_direction(true,"north"):
-					if! await go_direction(true,"north_east"):
-						if! await go_direction(true,"west"):
-							if! await go_direction(true,"east"):
-								return
+		if east_offset_from_target<0:
+			if await go_in_L("south","east","north","west"):
+				return true
 		else:
-			if! await go_direction(true,"north_east"):
-				if! await go_direction(true,"north"):
-					if! await go_direction(true,"north_west"):
-						if! await go_direction(true,"east"):
-							if! await go_direction(true,"west"):
-								return
-		
+			if await go_in_L("south","west","north","east"):
+				return true
+	print("couldnt decide on target proximity")
+	return false
 
-#deprecated
-func move_direction_roll():
-	if check_mate_escape_iterator == 0:
-		forced = false
-	check_mate_escape_iterator+=1
-	if check_mate_escape_iterator>15:
-		check_mate_escape_iterator = 0
-		return
-	var direction_roll = await Directory.rng.randf_range(1.0,100.0)
-	if direction_roll>75.0:
-		if !await go_north(true):
-			await move_direction_roll()
-			return
-	elif direction_roll>50:
-		if !await go_west(true):
-			await move_direction_roll()
-			return
-	elif direction_roll> 25:
-		if !await go_south(true):
-			await move_direction_roll()
-			return
-	elif direction_roll>0:
-		if !await go_east(true):
-			await move_direction_roll()
-			return
-	return true
-	check_mate_escape_iterator = 0
+func go_in_L(dir1,dir2,dir3,dir4):
+	var current_neighbor = get_neighbor_in_L(dir1,dir1,dir2)
+	if status_neighbor(current_neighbor) == 0:
+		if current_neighbor.safe<=-1:
+			await update_position(current_neighbor.get_parent())
+			Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
+			return true
+	current_neighbor = get_neighbor_in_L(dir1,dir2,dir2)
+	if status_neighbor(current_neighbor) == 0:
+		if current_neighbor.safe<=-1:
+			await update_position(current_neighbor.get_parent())
+			Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
+			return true
+	current_neighbor = get_neighbor_in_L(dir1,dir1,dir4)
+	if status_neighbor(current_neighbor) == 0:
+		if current_neighbor.safe<=-1:
+			await update_position(current_neighbor.get_parent())
+			Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
+			return true
+	current_neighbor = get_neighbor_in_L(dir1,dir4,dir4)
+	if status_neighbor(current_neighbor) == 0:
+		if current_neighbor.safe<=-1:
+			await update_position(current_neighbor.get_parent())
+			Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
+			return true
+		
+	current_neighbor = get_neighbor_in_L(dir3,dir3,dir2)
+	if status_neighbor(current_neighbor) == 0:
+		if current_neighbor.safe<=-1:
+			await update_position(current_neighbor.get_parent())
+			Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
+			return true
+	current_neighbor = get_neighbor_in_L(dir3,dir2,dir2)
+	if status_neighbor(current_neighbor) == 0:
+		if current_neighbor.safe<=-1:
+			await update_position(current_neighbor.get_parent())
+			Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
+			return true
+	current_neighbor = get_neighbor_in_L(dir3,dir3,dir4)
+	if status_neighbor(current_neighbor) == 0:
+		if current_neighbor.safe<=-1:
+			await update_position(current_neighbor.get_parent())
+			Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
+			return true
+	current_neighbor = get_neighbor_in_L(dir3,dir4,dir4)
+	if status_neighbor(current_neighbor) == 0:
+		if current_neighbor.safe<=-1:
+			await update_position(current_neighbor.get_parent())
+			Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
+			return true
+	print("no move found")
 
 func go_direction(start,direction):
 	if start == false:
-		print("queen of "+card.get_parent().name+" has continued moving in the "+direction+" direction!")
+		print("rook of "+card.get_parent().name+" has continued moving in the "+direction+" direction!")
 	else:
-		print("queen of "+card.get_parent().name+" has begun moving in the "+direction+" direction...")
+		print("rook of "+card.get_parent().name+" has begun moving in the "+direction+" direction...")
 	if card.area!="field":
 		return
 	var neighbor = card.get_tile().call("get_"+direction+"_neighbor")
@@ -209,7 +206,7 @@ func go_direction(start,direction):
 		moved = true
 		Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 		return true
-	if neighbor.safe>=-1 and start:
+	if neighbor.safe>=0 and start:
 		if !neighbor.call("get_"+direction+"_neighbor"):
 			return
 		if !neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor"):
@@ -231,18 +228,6 @@ func go_direction(start,direction):
 					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 					return true
 				if get_first_enemy_north():
-					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
-					return true
-				if get_first_enemy_north_east():
-					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
-					return true
-				if get_first_enemy_north_west():
-					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
-					return true
-				if get_first_enemy_south_east():
-					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
-					return true
-				if get_first_enemy_south_west():
 					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 					return true
 			"defense":#stop a tile early
@@ -286,16 +271,16 @@ func go_direction(start,direction):
 		neighbor = card.get_tile().call("get_"+direction+"_neighbor")
 		if !neighbor:
 			pass
-		elif neighbor.safe<-1:
+		elif neighbor.safe<0:
 			await call("go_direction",false,direction)
 		elif neighbor.call("get_"+direction+"_neighbor"):
-			if neighbor.call("get_"+direction+"_neighbor").safe<-1:
+			if neighbor.call("get_"+direction+"_neighbor").safe<0:
 				await call("go_direction",false,direction)
 			elif neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor"):
-				if neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").safe<-1:
+				if neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").safe<0:
 					await call("go_direction",false,direction)
 				elif neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor"):
-					if neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").safe<-1:
+					if neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").safe<0:
 						await call("go_direction",false,direction)
 	Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 	return true

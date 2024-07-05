@@ -13,6 +13,11 @@ func _ready():
 func _process(delta):
 	pass
 
+func budget_algorithm():
+	return 0
+
+func damage_algorithm(card):
+	return (card.damage+(game_manager.piece_levels[card.piece]-1)*2*game_manager.piece_levels[card.piece])*Directory.game_manager.mult
 
 func read_json(path):
 	var file = FileAccess.open(path, FileAccess.READ)

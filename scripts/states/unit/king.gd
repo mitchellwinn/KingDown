@@ -3,7 +3,6 @@ extends Unit
 var check_mate_escape_iterator = 0
 var attack_search_iterator = 0
 
-
 func check_attack():
 	if attack_search_iterator == 0:
 		print("checking for possible attack from king")
@@ -90,13 +89,20 @@ func attack(enemy):
 		move()
 		print("abort attack")
 		return
-	Directory.play_sound("res://audio/sfx/cardhit/"+str(Directory.rng.randi_range(1,1))+".mp3",-7,.75,0.1,1)
-	update_position(enemy.get_parent())
-	enemy.hp-=card.capture_value+4
-	Directory.game_manager.get_node("AnimationPlayer").play("cam_impact_light")
-	Directory.game_manager.get_node("AnimationPlayer").seek(0)
-	await get_tree().create_timer(.5).timeout
-	enemy.change_area("graveyard")
+	attack_target = enemy
+	var target_position = enemy.get_parent()
+	Directory.game_manager.damage_step_enemy.emit()
+	await get_tree().create_timer(.1).timeout
+	while Directory.game_manager.card_effect_resolving:
+		await get_tree().process_frame
+	update_position(target_position)
+	if enemy.invulnerability>0:
+		enemy.invulnerability-=1
+	else:
+		Directory.play_sound("res://audio/sfx/cardhit/"+str(Directory.rng.randi_range(1,1))+".mp3",-7,.75,0.1,1)
+		Directory.game_manager.get_node("AnimationPlayer").play("cam_impact_light")
+		Directory.game_manager.get_node("AnimationPlayer").seek(0)
+		enemy.change_area("graveyard")
 	await get_tree().create_timer(.35).timeout
 	Directory.game_manager.arrange_minimap()
 	moved = true

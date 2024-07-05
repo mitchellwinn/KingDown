@@ -2,6 +2,9 @@ extends Node
 
 signal reset_moves
 signal round_end
+signal damage_step
+signal damage_step_enemy
+signal pawn_promoted
 
 var dealing = false
 var phase := "hand"
@@ -28,10 +31,19 @@ var turn_card
 var attacking = false
 var card_effect_resolving = false
 var combo_pitch := 1
+var consecutive_attacks = 0
+var mult = 1
+var piece_levels: Dictionary
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Directory.game_manager = self
+	piece_levels["pawn"]=1
+	piece_levels["knight"]=1
+	piece_levels["bishop"]=1
+	piece_levels["rook"]=1
+	piece_levels["queen"]=1
+	piece_levels["king"]=1
 	await get_tree().physics_frame
 	var i = 1
 	for tile in board.get_children():
@@ -50,9 +62,10 @@ func start_round():
 	if round == 1:
 		create_deck()
 	arrange_minimap()
-	budget = round*5+20+10*(round/3)
+	budget = 25+Directory.budget_algorithm()
 	update_sideboard()
 	change_phase("hand")
+	$Camera3D/Minimap/RoundLabel.text="Round "+str(round)+"\n"+boss.display
 
 func update_sideboard():
 	quota = clamp(0,boss.hp,9999)
@@ -108,13 +121,16 @@ func create_deck():
 	var i = 0
 	while i<52:
 		var num = Directory.rng.randi_range(1,100)
-		if num>50:
+		if num>80:
 			spawn_card("blue_pawn","deck",false)
-		elif num>0:
+		elif num>60:
+			spawn_card("blue_knight","deck",false)
+		elif num>40:
 			spawn_card("blue_queen","deck",false)
-		elif num>25:
-			spawn_card("blue_queen","deck",false)
+		elif num>20:
+			spawn_card("blue_rook","deck",false)
 		elif num>0:
+			
 			spawn_card("blue_bishop","deck",false)
 		i+=1
 	i=0
@@ -155,14 +171,14 @@ func change_phase(new_phase):
 			await get_tree().create_timer(.35).timeout
 			while hand.get_child_count()<7:
 				deck.get_child(deck.get_child_count()-1).change_area("hand")
-				await get_tree().create_timer(.35).timeout
+				await get_tree().create_timer(.05).timeout
 			dealing = false
 			commence.pressed = false
 			commence._on_toggle()
 		"win":
 			await get_tree().create_timer(.75).timeout
 			round_end.emit()
-			await get_tree().create_timer(.1).timeout
+			await get_tree().create_timer(.5).timeout
 			while card_effect_resolving:
 				await get_tree().create_timer(.5).timeout
 			arrange_camera()
@@ -225,13 +241,29 @@ func populate_shop():
 		card.get_node("StateMachine").state.update_position.call_deferred(child)
 		card.change_area("shop")
 
-func commencement(enemy: bool):
+func stage_attack(card):
+	if !card.enemy:
+		damage_step.emit()
 	await get_tree().create_timer(.35).timeout
+	while(card_effect_resolving):
+		await get_tree().create_timer(.35).timeout
+	attacking = true
+	arrange_camera()
+	await card.get_node("StateMachine").state.attack(card.get_node("StateMachine").state.attack_target)
+	await get_tree().create_timer(.35).timeout
+	consecutive_attacks +=1
+
+func commencement(enemy: bool):
+	await get_tree().create_timer(.05).timeout
 	reset_moves.emit()
 	arrange_minimap()
 	live_pieces.sort_custom(sort_live_pieces)
-	for card in live_pieces:
+	var live_pieces_this_turn = live_pieces.duplicate()
+	consecutive_attacks = 0
+	for card in live_pieces_this_turn:
 		card.in_play = true
+		mult = 1
+		reset_combo_counter()
 		if card.enemy != enemy:
 			card.get_node("StateMachine").state.attack_target = false
 			continue
@@ -239,16 +271,12 @@ func commencement(enemy: bool):
 		arrange_camera()
 		await get_tree().create_timer(.25).timeout
 		#var can_attack = await card.get_node("StateMachine").state.check_attack()
+		print( card.get_node("StateMachine").state.attack_target)
 		if card.get_node("StateMachine").state.attack_target:
-			attacking = true
-			arrange_camera()
-			card.get_node("StateMachine").state.attack(card.get_node("StateMachine").state.attack_target)
+			await stage_attack(card)
 		elif card.get_node("StateMachine").state.has_attack():
-			attacking = true
-			arrange_camera()
-			card.get_node("StateMachine").state.attack(card.get_node("StateMachine").state.attack_target)
-			await get_tree().create_timer(.35).timeout
-		if !card.get_node("StateMachine").state.attack_target:
+			await stage_attack(card)
+		elif !card.get_node("StateMachine").state.attack_target:
 			attacking = false
 			if !card.get_node("StateMachine").state.moved:
 				await card.get_node("StateMachine").state.move()
@@ -290,6 +318,10 @@ func arrange_minimap():
 
 func sort_live_pieces(a,b):
 	if a.get_node("StateMachine").state.has_attack() and !b.get_node("StateMachine").state.has_attack():
+		return true
+	if a.get_tile().safe> b.get_tile().safe:
+		return true
+	if Directory.damage_algorithm(a)<Directory.damage_algorithm(b):
 		return true
 	return false
 	

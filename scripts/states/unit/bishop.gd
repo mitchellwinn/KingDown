@@ -2,10 +2,6 @@ extends Unit
 
 var check_mate_escape_iterator = 0
 
-func enter(_msg := {}) -> void:
-	Directory.game_manager.reset_moves.connect(_reset_moves)
-	card = state_machine.card
-
 func has_attack():
 	attack_target = false
 	attack_target = has_diagonal_attack()
@@ -32,35 +28,48 @@ func check_attack():
 	if enemy:
 		await attack(enemy)
 		return true
-		
+
+func update_position(parent):
+	if !parent:
+		return
+	if parent is Area3D:
+		return
+	print("reparenting "+card.display+" to "+str(parent))
+	card.reparent(parent)
+	#print(card.identifying_name+" update position to "+str(card.get_parent().get_node("Area3D").tile_id))
+	card.target_position = card.get_parent().global_position+Vector3(0,0,6)
+
 func set_danger_tiles():
 	defending_pieces = []
+	var safety_bonus = 2
+	if moved:
+		safety_bonus = 5
 	var current_neighbor = card.get_parent().get_child(0).get_north_west_neighbor()
 	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
 		if status_neighbor(current_neighbor) == 1:
 			defending_pieces.append(current_neighbor.get_parent().get_child(1))
-		current_neighbor.safe -=1
+		current_neighbor.safe -=safety_bonus
 		current_neighbor = current_neighbor.get_north_west_neighbor()
 		
 	current_neighbor = card.get_parent().get_child(0).get_south_west_neighbor()
 	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
 		if status_neighbor(current_neighbor) == 1:
 			defending_pieces.append(current_neighbor.get_parent().get_child(1))
-		current_neighbor.safe -=1
+		current_neighbor.safe -=safety_bonus
 		current_neighbor = current_neighbor.get_south_west_neighbor()
 		
 	current_neighbor = card.get_parent().get_child(0).get_south_east_neighbor()
 	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
 		if status_neighbor(current_neighbor) == 1:
 			defending_pieces.append(current_neighbor.get_parent().get_child(1))
-		current_neighbor.safe -=1
+		current_neighbor.safe -=safety_bonus
 		current_neighbor = current_neighbor.get_south_east_neighbor()
 	
 	current_neighbor = card.get_parent().get_child(0).get_north_east_neighbor()
 	while status_neighbor(current_neighbor) == 0 or status_neighbor(current_neighbor) == 1 or status_neighbor(current_neighbor) == 2:
 		if status_neighbor(current_neighbor) == 1:
 			defending_pieces.append(current_neighbor.get_parent().get_child(1))
-		current_neighbor.safe -=1
+		current_neighbor.safe -=safety_bonus
 		current_neighbor = current_neighbor.get_north_east_neighbor()
 
 func attack(enemy):
@@ -70,7 +79,7 @@ func attack(enemy):
 	Directory.game_manager.camera_target = Vector3(enemy.global_position.x,enemy.global_position.y,4)
 	Directory.play_sound("res://audio/sfx/cardhit/"+str(Directory.rng.randi_range(1,1))+".mp3",-7,.75,0.1,1)	
 	await update_position(enemy.get_parent())
-	enemy.hp-=card.capture_value+4
+	enemy.hp-=Directory.damage_algorithm(card)
 	Directory.game_manager.update_sideboard()
 	if enemy.hp<=0:
 		enemy.change_area("graveyard")
@@ -90,14 +99,12 @@ func move():
 			if defending_pieces[0].get_tile().safe>0:
 				print("bishop abort defending")
 				return
-	if Directory.game_manager.boss.get_tile().safe>=0:
+	if Directory.game_manager.boss.get_tile().safe>=2:
 		mode = "attack"
 	else:
 		mode = "defense"
 	target = Directory.game_manager.boss
 	for _card in Directory.game_manager.live_pieces:
-		if !_card == null:
-			continue
 		if !_card.enemy and _card.get_tile().safe>=1 and _card != card:
 			target = _card
 	print("bishop of "+card.get_parent().name+" moves in "+mode+" mode targeting "+str(target.display)+".")
@@ -218,13 +225,14 @@ func go_direction(start,direction):
 		moved = true
 		return true
 		print("bishop forced in place")
-	if neighbor.safe>=0 and start:
+	if neighbor.safe>=-1 and start:
 		if !neighbor.call("get_"+direction+"_neighbor"):
 			return 
 		if neighbor.call("get_"+direction+"_neighbor").safe>=0:
 			return 
 		
 	start = false
+	print("calling update_position from go_direction")
 	await update_position(neighbor.get_parent())	
 	if card.get_tile().safe<=-1:
 		if target == Directory.game_manager.boss:
@@ -232,24 +240,29 @@ func go_direction(start,direction):
 				Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 				return true
 		else:
-			var ally = get_first_enemy_direction("north_west")
+			var ally 
+			if get_first_enemy_direction("north_west"):
+				ally = get_first_enemy_direction("north_west").get_parent().get_child(1)
 			if ally:
-				if !ally.enemy and ally.safe>=0:
+				if !ally.enemy and ally.get_tile().safe>=0:
 					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 					return true
-			ally = get_first_enemy_direction("north_east")
+			if get_first_enemy_direction("north_east"):
+				ally = get_first_enemy_direction("north_east").get_parent().get_child(1)
 			if ally:
-				if !ally.enemy and ally.safe>=0:
+				if !ally.enemy and ally.get_tile().safe>=0:
 					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 					return true
-			ally = get_first_enemy_direction("south_west")
+			if get_first_enemy_direction("south_west"):
+				ally = get_first_enemy_direction("south_west").get_parent().get_child(1)
 			if ally:
-				if !ally.enemy and ally.safe>=0:
+				if !ally.enemy and ally.get_tile().safe>=0:
 					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 					return true
-			ally = get_first_enemy_direction("south_east")
+			if get_first_enemy_direction("south_east"):
+				ally = get_first_enemy_direction("south_east").get_parent().get_child(1)
 			if ally:
-				if !ally.enemy and ally.safe>=0:
+				if !ally.enemy and ally.get_tile().safe>=0:
 					Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
 					return true
 
@@ -258,159 +271,16 @@ func go_direction(start,direction):
 		neighbor = card.get_tile().call("get_"+direction+"_neighbor")
 		if !neighbor:
 			pass
-		elif neighbor.safe<0:
+		elif neighbor.safe<-1:
 			await call("go_direction",false,direction)
 		elif neighbor.call("get_"+direction+"_neighbor"):
-			if neighbor.call("get_"+direction+"_neighbor").safe<0:
+			if neighbor.call("get_"+direction+"_neighbor").safe<-1:
 				await call("go_direction",false,direction)
 			elif neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor"):
-				if neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").safe<0:
+				if neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").safe<-1:
 					await call("go_direction",false,direction)
 				elif neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor"):
-					if neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").safe<0:
+					if neighbor.call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").call("get_"+direction+"_neighbor").safe<-1:
 						await call("go_direction",false,direction)
 	Directory.play_sound("res://audio/sfx/cardslide/"+str(Directory.rng.randi_range(1,8))+".mp3",-15,.75,0.1,1)
-	return true
-
-func go_north_west(start):
-	if card.area!="field":
-		return
-	var neighbor = card.get_parent().get_node("Area3D").get_north_west_neighbor()
-	if !neighbor:
-		return false
-	if neighbor.get_parent().get_child_count()>1: #card already occupies tile
-		return false
-	if forced:
-		await update_position(neighbor.get_parent())
-		return true
-	if neighbor.safe>=0 and start:
-		if !neighbor.get_north_west_neighbor():
-			return
-		if !neighbor.get_north_west_neighbor().get_north_west_neighbor():
-			return
-	await update_position(neighbor.get_parent())	
-	if card.get_tile().safe<=-1 and neighbor.get_north_west_neighbor():
-		match mode:
-			"attack":
-				if status_north_west() == 0:
-					if await king_on_diagonal(1) == false and neighbor.get_north_west_neighbor().safe<=0:
-						await go_north_west(false)
-						return true
-	if status_north_west()==0:
-		if neighbor.get_north_west_neighbor():
-			if neighbor.get_north_west_neighbor().safe<0:
-				await go_north_west(false)
-			elif neighbor.get_north_west_neighbor().get_north_west_neighbor():
-				if neighbor.get_north_west_neighbor().get_north_west_neighbor().safe<0:
-					await go_north_west(false)
-				elif neighbor.get_north_west_neighbor().get_north_west_neighbor().get_north_west_neighbor():
-					if neighbor.get_north_west_neighbor().get_north_west_neighbor().get_north_west_neighbor().safe<0:
-						await go_north_west(false)
-	return true
-	
-func go_south_west(start):
-	if card.area!="field":
-		return
-	var neighbor = card.get_parent().get_node("Area3D").get_south_west_neighbor()
-	if !neighbor:
-		return false
-	if neighbor.get_parent().get_child_count()>1: #card already occupies tile
-		return false
-	if forced:
-		await update_position(neighbor.get_parent())
-		return true
-	if neighbor.safe>=0 and start:
-		if !neighbor.get_south_west_neighbor():
-			return
-		if !neighbor.get_south_west_neighbor().get_south_west_neighbor():
-			return
-	await update_position(neighbor.get_parent())	
-	if card.get_tile().safe<=-1 and neighbor.get_south_west_neighbor():
-		match mode:
-			"attack":
-				if status_south_west() == 0:
-					if await king_on_diagonal(1) == false and neighbor.get_south_west_neighbor().safe<=0 :
-						await go_south_west(false)
-						return true
-	if status_south_west()==0:
-		if neighbor.get_south_west_neighbor():
-			if neighbor.get_south_west_neighbor().safe<0:
-				await go_south_west(false)
-			elif neighbor.get_south_west_neighbor().get_south_west_neighbor():
-				if neighbor.get_south_west_neighbor().get_south_west_neighbor().safe<0:
-					await go_south_east(false)
-				elif neighbor.get_south_west_neighbor().get_south_west_neighbor().get_south_west_neighbor():
-					if neighbor.get_south_west_neighbor().get_south_west_neighbor().get_south_west_neighbor().safe<0:
-						await go_south_west(false)
-	return true
-	
-func go_north_east(start):
-	if card.area!="field":
-		return
-	var neighbor = card.get_tile().get_north_east_neighbor()
-	if !neighbor:
-		return false
-	if neighbor.get_parent().get_child_count()>1: #card already occupies tile
-		return false
-	if forced:
-		await update_position(neighbor.get_parent())
-		return true
-	if neighbor.safe>=1 and start:
-		if !neighbor.get_north_east_neighbor():
-			return
-		if !neighbor.get_north_east_neighbor().get_north_east_neighbor():
-			return 
-	await update_position(neighbor.get_parent())	
-	if card.get_tile().safe<=-1 and neighbor.get_north_east_neighbor():
-		match mode:
-			"attack":
-				if status_north_east() == 0:
-					if await king_on_diagonal(1) == true and neighbor.get_north_east_neighbor().safe<=0:
-						return true
-	if status_north_east()==0:
-		if neighbor.get_north_east_neighbor():
-			if neighbor.get_north_east_neighbor().safe<0:
-				await go_north_east(false)
-			elif neighbor.get_north_east_neighbor().get_north_east_neighbor():
-				if neighbor.get_north_east_neighbor().get_north_east_neighbor().safe<0:
-					await go_north_east(false)
-				elif neighbor.get_north_east_neighbor().get_north_east_neighbor().get_north_east_neighbor():
-					if neighbor.get_north_east_neighbor().get_north_east_neighbor().get_north_east_neighbor().safe<0:
-						await go_north_east(false)
-	return true
-	
-func go_south_east(start):
-	if card.area!="field":
-		return
-	var neighbor = card.get_parent().get_node("Area3D").get_south_east_neighbor()
-	if !neighbor:
-		return false
-	if neighbor.get_parent().get_child_count()>1: #card already occupies tile
-		return false
-	if forced:
-		await update_position(neighbor.get_parent())
-		return true
-	if neighbor.safe>=0 and start:
-		if !neighbor.get_south_east_neighbor():
-			return
-		if !neighbor.get_south_east_neighbor().get_south_east_neighbor():
-			return
-	await update_position(neighbor.get_parent())	
-	if card.get_tile().safe<=-1 and neighbor.get_south_east_neighbor():
-		match mode:
-			"attack":
-				if status_north_east() == 0:
-					if await king_on_diagonal(1) == false and neighbor.get_south_east_neighbor().safe<=0:
-						await go_south_east(false)
-						return true
-	if status_south_east()==0:
-		if neighbor.get_south_east_neighbor():
-			if neighbor.get_south_east_neighbor().safe<0:
-				await go_south_east(false)
-			elif neighbor.get_south_east_neighbor().get_south_east_neighbor():
-				if neighbor.get_south_east_neighbor().get_south_east_neighbor().safe<0:
-					await go_south_east(false)
-				elif neighbor.get_south_east_neighbor().get_south_east_neighbor().get_south_east_neighbor():
-					if neighbor.get_south_east_neighbor().get_south_east_neighbor().get_south_east_neighbor().safe<0:
-						await go_south_east(false)
 	return true

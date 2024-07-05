@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://l4w04v37cfpu"]
+[gd_scene load_steps=29 format=3 uid="uid://l4w04v37cfpu"]
 
 [ext_resource type="Texture2D" uid="uid://djljwv8t4ki68" path="res://sprites/excalibur.png" id="1_6y6rm"]
 [ext_resource type="Script" path="res://scripts/card.gd" id="2_ujo4m"]
@@ -14,7 +14,6 @@
 [ext_resource type="FontFile" uid="uid://y8v8ttnxc0ms" path="res://alagard.ttf" id="10_cypk5"]
 [ext_resource type="Texture2D" uid="uid://dj7scm6i4dnmk" path="res://sprites/buy_button.png" id="11_6uclo"]
 [ext_resource type="Script" path="res://scripts/button.gd" id="12_g2t6m"]
-[ext_resource type="FontFile" uid="uid://xttwmf7eew3a" path="res://slkscr.ttf" id="14_mmly2"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_pky6t"]
 size = Vector2(0.72, 0.96)
@@ -220,42 +219,6 @@ tracks/2/keys = {
 "update": 0,
 "values": [Vector3(1, 0, 1)]
 }
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("ProcText:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 2, 3),
-"transitions": PackedFloat32Array(0.203063, 1.93187, 0.203063),
-"update": 0,
-"values": [Vector3(0, 0.457, 0.67), Vector3(0, 0.599361, 0.67), Vector3(0, 0.457, 0.67)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("ProcText:visible")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, true]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("ProcText:scale")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 2, 3),
-"transitions": PackedFloat32Array(0.0824693, 2.73208, 0.0824693),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(1, 1, 1), Vector3(0, 0, 0)]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hbwok"]
 _data = {
@@ -315,25 +278,6 @@ layers = 4
 mesh = SubResource("QuadMesh_pky6t")
 surface_material_override/0 = SubResource("StandardMaterial3D_hmknt")
 script = ExtResource("2_ujo4m")
-
-[node name="ProcText" type="Label3D" parent="."]
-transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.457, 0.67)
-layers = 4
-sorting_use_aabb_center = false
-pixel_size = 0.01
-double_sided = false
-alpha_cut = 1
-alpha_scissor_threshold = 0.53
-alpha_hash_scale = 0.0
-alpha_antialiasing_edge = 0.11
-texture_filter = 0
-outline_modulate = Color(0.423529, 0, 1, 1)
-text = "Knight LEVEL UP!"
-font = ExtResource("10_cypk5")
-font_size = 16
-outline_size = 5
-uppercase = true
-autowrap_mode = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -554,8 +498,8 @@ modulate = Color(0, 0, 0, 1)
 outline_modulate = Color(0, 0, 0, 0.0941176)
 text = "Plus 1 Gold if in-play
 when round ends"
-font = ExtResource("14_mmly2")
-font_size = 9
+font = ExtResource("10_cypk5")
+font_size = 14
 outline_size = 5
 vertical_alignment = 0
 autowrap_mode = 3
