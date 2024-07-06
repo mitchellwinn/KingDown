@@ -1,6 +1,6 @@
 [gd_scene load_steps=31 format=3 uid="uid://l4w04v37cfpu"]
 
-[ext_resource type="Texture2D" uid="uid://dme4rv4hjybpr" path="res://sprites/holographic_normal_1.png" id="2_t2cpq"]
+[ext_resource type="Texture2D" uid="uid://dkywag5udjk0b" path="res://sprites/holographic_normal_2.png" id="2_37ud0"]
 [ext_resource type="Shader" path="res://scripts/shaders/card.gdshader" id="2_u80jd"]
 [ext_resource type="Script" path="res://scripts/card.gd" id="2_ujo4m"]
 [ext_resource type="Script" path="res://scripts/state_machine.gd" id="3_5q3v2"]
@@ -24,7 +24,7 @@ size = Vector2(0.72, 0.96)
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_u80jd")
-shader_parameter/sprite_normal = ExtResource("2_t2cpq")
+shader_parameter/sprite_normal = ExtResource("2_37ud0")
 
 [sub_resource type="Animation" id="Animation_lnhcb"]
 resource_name = "buy"
@@ -309,7 +309,8 @@ _data = {
 
 [node name="card" type="MeshInstance3D"]
 top_level = true
-layers = 4
+layers = 0
+cast_shadow = 0
 mesh = SubResource("QuadMesh_pky6t")
 surface_material_override/0 = SubResource("ShaderMaterial_cyd2g")
 script = ExtResource("2_ujo4m")
@@ -574,7 +575,17 @@ alpha_cut = 1
 texture_filter = 0
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.10553)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65522e-08, 0.0914165, 0.401665)
+light_energy = 5.0
+light_indirect_energy = 4.125
+light_size = 30.0
+light_specular = 0.005
+light_bake_mode = 0
+light_cull_mask = 4293918720
+spot_range = 1.0
+spot_attenuation = 0.258816
+spot_angle = 90.0
+spot_angle_attenuation = 0.0145786
 
 [connection signal="mouse_entered" from="Area3D" to="." method="_on_area_3d_mouse_entered"]
 [connection signal="mouse_exited" from="Area3D" to="." method="_on_area_3d_mouse_exited"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://dgtilhxu443bf"]
+[gd_scene load_steps=42 format=3 uid="uid://dgtilhxu443bf"]
 
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_bnyea"]
 [ext_resource type="Texture2D" uid="uid://cysfd60opdwam" path="res://sprites/mini_grid2.png" id="2_s7vf0"]
@@ -16,6 +16,10 @@
 [ext_resource type="Texture2D" uid="uid://cmry23fl38ktn" path="res://sprites/commence_outline1.png" id="12_llrtw"]
 [ext_resource type="Texture2D" uid="uid://tf4avm7py5sm" path="res://sprites/next_round_button.png" id="14_pujt3"]
 [ext_resource type="Shader" path="res://scripts/shaders/Benji_Screen_Space_Camera_Ripple .gdshader" id="15_euld0"]
+
+[sub_resource type="Environment" id="Environment_lj765"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_vugv4"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_bajny"]
 viewport_path = NodePath("MeshInstance3D/SubViewport")
@@ -477,9 +481,11 @@ commence = NodePath("Commence/Area3D")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 4)
+environment = SubResource("Environment_lj765")
+attributes = SubResource("CameraAttributesPractical_vugv4")
 projection = 1
 current = true
-fov = 2.5
+fov = 84.0
 size = 5.4
 
 [node name="Minimap" type="Sprite3D" parent="Camera3D"]
@@ -1516,7 +1522,7 @@ texture_filter = 0
 texture = ExtResource("8_ifavb")
 
 [node name="hand" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.2, -87.7912)
 
 [node name="Commence" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0)

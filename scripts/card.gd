@@ -18,15 +18,15 @@ var uid: int
 var damage: int
 var hp: int
 var invulnerability := 0
-var light_mask = 2**Directory.rng.randi_range(0, 20)
+var light_mask = Directory.rng.randi_range(1, 20)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	while Directory.game_manager == null:
 		await get_tree().physics_frame
 	game_manager = Directory.game_manager
-	layers = light_mask
-	$SpotLight3D.Layers = light_mask
+	set_layer_mask(light_mask)
+	$SpotLight3D.set_layer_mask(light_mask)
 
 # Called when the node enters the scene tree for the first time.
 func initialize():
@@ -51,7 +51,7 @@ func _process(delta):
 	select_card()
 	if !selected and Directory.game_manager.hovering_card != self and $DescriptionWindow.scale.y>0.5:
 		$AnimationPlayer.play("description_close")
-	global_position = global_position.lerp(target_position,delta*4)
+	global_position = global_position.lerp(target_position,delta*7)
 	if selected:
 		$SelectOutline.visible = true
 		var i =0.5
@@ -127,6 +127,7 @@ func change_area(new_area):
 				if $DescriptionWindow.scale.y>0.5:
 					$AnimationPlayer.play("description_close")
 				Directory.play_sound("res://audio/sfx/cardflick/"+str(Directory.rng.randi_range(1,8))+".mp3",0,.95,0.05,1)
+				#$SpotLight3D.light_energy = 0
 				reparent(Directory.game_manager.deck)
 			else:
 				Directory.game_manager.deck.add_child(self)
@@ -135,6 +136,7 @@ func change_area(new_area):
 			area = new_area
 			in_play = false
 			change_sprite("card_back")
+			#$SpotLight3D.light_energy = 0
 			if is_inside_tree():
 				for card in Directory.game_manager.live_pieces:
 					if card.uid == uid:
@@ -150,6 +152,7 @@ func change_area(new_area):
 				in_play = false
 				Directory.game_manager.live_pieces.erase(self)
 			if old_area == "deck":
+				#$SpotLight3D.light_energy = 1.0
 				change_sprite(identifying_name)
 			reparent(Directory.game_manager.hand)
 
@@ -172,6 +175,7 @@ func change_area(new_area):
 					Directory.game_manager.live_pieces.append(self)
 				elif area == "deck":
 					area = new_area
+					#$SpotLight3D.light_energy = 1
 					change_sprite(identifying_name)
 					reparent(Directory.game_manager.board.get_node(Directory.game_manager.active_tile.get_parent().name.substr(0,2)))
 					Directory.game_manager.live_pieces.append(self)
