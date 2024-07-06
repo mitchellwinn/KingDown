@@ -920,6 +920,9 @@ alpha_hash_scale = 1.22
 texture_filter = 0
 texture = SubResource("ViewportTexture_bajny")
 
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D"]
+light_energy = 16.0
+
 [node name="board" type="Node3D" parent="."]
 transform = Transform3D(-1, 8.74228e-08, 1.74846e-07, -8.74228e-08, -1, 7.64275e-15, 1.74846e-07, -7.64274e-15, 1, -2, 3, -89.273)
 

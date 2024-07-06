@@ -1,5 +1,6 @@
-[gd_scene load_steps=30 format=3 uid="uid://l4w04v37cfpu"]
+[gd_scene load_steps=31 format=3 uid="uid://l4w04v37cfpu"]
 
+[ext_resource type="Texture2D" uid="uid://dme4rv4hjybpr" path="res://sprites/holographic_normal_1.png" id="2_t2cpq"]
 [ext_resource type="Shader" path="res://scripts/shaders/card.gdshader" id="2_u80jd"]
 [ext_resource type="Script" path="res://scripts/card.gd" id="2_ujo4m"]
 [ext_resource type="Script" path="res://scripts/state_machine.gd" id="3_5q3v2"]
@@ -23,6 +24,7 @@ size = Vector2(0.72, 0.96)
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_u80jd")
+shader_parameter/sprite_normal = ExtResource("2_t2cpq")
 
 [sub_resource type="Animation" id="Animation_lnhcb"]
 resource_name = "buy"
