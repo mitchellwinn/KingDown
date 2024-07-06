@@ -479,7 +479,7 @@ commence = NodePath("Commence/Area3D")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 4)
 projection = 1
 current = true
-fov = 2.5
+fov = 81.0
 size = 5.4
 
 [node name="Minimap" type="Sprite3D" parent="Camera3D"]

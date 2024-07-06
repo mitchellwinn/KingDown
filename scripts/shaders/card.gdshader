@@ -1,8 +1,8 @@
 shader_type spatial;
 //render_mode unshaded;
 
-uniform sampler2D sprite_normal : filter_nearest, hint_normal;
-uniform sampler2D sprite : filter_nearest, source_color;
+uniform sampler2D sprite_normal : filter_nearest_mipmap, hint_normal;
+uniform sampler2D sprite : filter_nearest_mipmap, source_color;
 uniform sampler2D screen : hint_screen_texture;
 
 void vertex() {
@@ -18,8 +18,6 @@ void fragment() {
 	ALBEDO = mixed_color.rgb;
 	ALPHA = sprite_tex.a;
 	METALLIC = 1.0;
-	ROUGHNESS = 0.2;
-
 }
 
 //void light() {
