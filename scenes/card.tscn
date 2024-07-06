@@ -573,6 +573,9 @@ sorting_offset = 1.0
 alpha_cut = 1
 texture_filter = 0
 
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.10553)
+
 [connection signal="mouse_entered" from="Area3D" to="." method="_on_area_3d_mouse_entered"]
 [connection signal="mouse_exited" from="Area3D" to="." method="_on_area_3d_mouse_exited"]
 [connection signal="mouse_entered" from="BuyArea" to="BuyArea" method="_on_mouse_entered"]

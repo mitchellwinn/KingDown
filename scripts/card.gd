@@ -18,12 +18,15 @@ var uid: int
 var damage: int
 var hp: int
 var invulnerability := 0
+var light_mask = 2**Directory.rng.randi_range(0, 20)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	while Directory.game_manager == null:
 		await get_tree().physics_frame
 	game_manager = Directory.game_manager
+	layers = light_mask
+	$SpotLight3D.Layers = light_mask
 
 # Called when the node enters the scene tree for the first time.
 func initialize():

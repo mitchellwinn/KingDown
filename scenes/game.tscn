@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://dgtilhxu443bf"]
+[gd_scene load_steps=40 format=3 uid="uid://dgtilhxu443bf"]
 
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_bnyea"]
 [ext_resource type="Texture2D" uid="uid://cysfd60opdwam" path="res://sprites/mini_grid2.png" id="2_s7vf0"]
@@ -16,21 +16,6 @@
 [ext_resource type="Texture2D" uid="uid://cmry23fl38ktn" path="res://sprites/commence_outline1.png" id="12_llrtw"]
 [ext_resource type="Texture2D" uid="uid://tf4avm7py5sm" path="res://sprites/next_round_button.png" id="14_pujt3"]
 [ext_resource type="Shader" path="res://scripts/shaders/Benji_Screen_Space_Camera_Ripple .gdshader" id="15_euld0"]
-
-[sub_resource type="Environment" id="Environment_1o1hx"]
-background_mode = 1
-background_color = Color(0.333333, 0, 0, 1)
-background_energy_multiplier = 0.0
-ambient_light_source = 1
-reflected_light_source = 1
-tonemap_mode = 2
-fog_light_color = Color(0.243137, 0.145098, 0, 1)
-fog_light_energy = 0.78
-fog_density = 0.0
-fog_height = -689.86
-fog_height_density = 9.4316
-volumetric_fog_density = 0.4763
-adjustment_enabled = true
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_bajny"]
 viewport_path = NodePath("MeshInstance3D/SubViewport")
@@ -492,8 +477,6 @@ commence = NodePath("Commence/Area3D")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 4)
-cull_mask = 7
-environment = SubResource("Environment_1o1hx")
 projection = 1
 current = true
 fov = 2.5
@@ -920,11 +903,8 @@ alpha_hash_scale = 1.22
 texture_filter = 0
 texture = SubResource("ViewportTexture_bajny")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D"]
-light_energy = 16.0
-
 [node name="board" type="Node3D" parent="."]
-transform = Transform3D(-1, 8.74228e-08, 1.74846e-07, -8.74228e-08, -1, 7.64275e-15, 1.74846e-07, -7.64274e-15, 1, -2, 3, -89.273)
+transform = Transform3D(-1, 1.50996e-07, 1.74846e-07, -1.50996e-07, -1, 7.64279e-15, 1.74846e-07, -1.87582e-14, 1, -2, 3, -89.273)
 
 [node name="a1" type="MeshInstance3D" parent="board"]
 transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, 0, 0, 0)
