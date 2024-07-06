@@ -52,14 +52,14 @@ vec3 sum_of_sines(float time, Wave w) {
 	vec2 dwdxy = vec2(0.0);
 	for (int i = 0; i <= (num_sines-1); i++) {
 		float amp = w.a[i].x * w.a[i].y;
-		
+
 		// Spherical wave eqn
 		float r = sqrt(pow(w.pos.x, 2.0) + pow(w.pos.y, 2.0)); // symmetric on theta
 		float x = r * w.w[i].x - time * w.f[i].x;
 		float y = r * w.w[i].y - time * w.f[i].y;
 		float s = _VertexPeakWidth;
 		height += amp * r * (sin(x) + cos(y)); // non-exponential imaginary rep of sin + icos
-		
+
 		// Normals rotate opposite to the geometry so we need to negate the rotation here
 		float _drdx = 2.0 * w.pos.x / r;
 		float _drdy = 2.0 * w.pos.y / r;
@@ -67,7 +67,7 @@ vec3 sum_of_sines(float time, Wave w) {
 		float _dydx = w.w[i].y * _drdx;
 		float _dxdy = w.w[i].x * _drdy;
 		float _dydy = w.w[i].y * _drdy;
-		
+
 		dwdx += amp * (r * (cos(x) * _dxdx - sin(y) * _dydx) + (r * _drdx * (sin(x) + cos(y))));
 		dwdy += amp * (r * (cos(x) * _dxdy - sin(y) * _dydy) + (r * _drdy * (sin(x) + cos(y))));
 
@@ -92,7 +92,7 @@ void vertex() {
 	NORMAL = MODEL_NORMAL_MATRIX * NORMAL;
 	//POSITION = vec4(VERTEX, 1.0);
 	//UV = -UV;
-	
+
 	invViewMat = INV_VIEW_MATRIX;
 }
 

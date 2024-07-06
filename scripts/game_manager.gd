@@ -53,7 +53,7 @@ func _ready():
 	round = 1
 	await get_tree().create_timer(.25).timeout
 	start_round()
-	
+
 func start_round():
 	turn = 1
 	$AnimationPlayer.play("UI_in")
@@ -132,7 +132,7 @@ func create_deck():
 		elif num>20:
 			spawn_card("blue_rook","deck",false)
 		elif num>0:
-			
+
 			spawn_card("blue_bishop","deck",false)
 		i+=1
 	i=0
@@ -214,7 +214,7 @@ func clear_shop():
 			continue
 		for child2 in child.get_children():
 			child2.queue_free()
-	
+
 func update_gold():
 	var i = 0
 	for gold in $Shop/GoldPile.get_children():
@@ -309,7 +309,7 @@ func commencement(enemy: bool):
 				change_phase("hand")
 				return
 	await commencement(true)
-	
+
 func arrange_minimap():
 	var i =0
 	while i<25:
@@ -328,7 +328,7 @@ func sort_live_pieces(a,b):
 	if Directory.damage_algorithm(a)<Directory.damage_algorithm(b):
 		return true
 	return false
-	
+
 
 func reset_safe_tiles():
 	for tile in board.get_children():
@@ -347,14 +347,14 @@ func debug_safety_tiles(onOff):
 	for tile in board.get_children():
 		tile.get_node("Area3D/Safe").visible = onOff
 		tile.get_node("Area3D/Safe").text = str(tile.get_node("Area3D").safe)
-	
+
 func set_safe_tiles_enemy():
 	for tile in board.get_children():
 		if tile.get_child(1):
 			if tile.get_child(1).enemy:
 				await tile.get_child(1).get_node("StateMachine").state.set_danger_tiles()
 	await get_tree().create_timer(.1).timeout
-	
+
 func arrange_board():
 	for card in live_pieces:
 		card.target_position = card.get_tile().global_position+Vector3(0,0,6)
@@ -376,7 +376,7 @@ func arrange_baubles():
 		else:
 			card.target_position = baubles.global_position+Vector3(.75,1*(i-3),.1*i-20)
 		i+=1
-		
+
 func arrange_graveyard():
 	var i = 0
 	for card in graveyard.get_children():
@@ -396,7 +396,7 @@ func arrange_hand():
 		elif hovering_card != card:
 			card.target_position = hand_target_position+Vector3(.8*i-float(clamp(hand.get_child_count()-1,0,8))/1/14.0,0,-.01*i)
 		i+=1
-		
+
 func arrange_shop():
 	hand_target_position = Vector3(-.8/2.0*(float(hand.get_child_count()-1)-float(clamp(hand.get_child_count()-1,0,8))/1/5.75),-3.25,3)
 	for child in $Shop.get_children():

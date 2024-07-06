@@ -105,7 +105,7 @@ func select_card():
 				Directory.game_manager.budget += capture_value
 				Directory.game_manager.update_sideboard()
 				change_area("hand")
-				
+
 	elif Input.is_action_just_pressed("select") and selected:
 		if Directory.game_manager.active_tile or Directory.game_manager.hovering_button:
 			return
@@ -149,7 +149,7 @@ func change_area(new_area):
 			if old_area == "deck":
 				change_sprite(identifying_name)
 			reparent(Directory.game_manager.hand)
-			
+
 		"baubles":
 			selected = false
 			if $DescriptionWindow.scale.y>0.5:
@@ -157,7 +157,7 @@ func change_area(new_area):
 			Directory.play_sound("res://audio/sfx/cardflick/"+str(Directory.rng.randi_range(1,8))+".mp3",0,1.15,0.05,1)
 			area = new_area
 			reparent(Directory.game_manager.baubles)
-			
+
 		"field":
 			if !enemy:
 				if Directory.game_manager.budget>=capture_value and area == "hand":
@@ -191,16 +191,17 @@ func change_area(new_area):
 	Directory.game_manager.arrange_deck.call_deferred()
 	Directory.game_manager.arrange_graveyard.call_deferred()
 	Directory.game_manager.arrange_baubles.call_deferred()
-	
+
 func change_sprite(sprite):
 	var image = Image.load_from_file("res://sprites/"+sprite+".png")
 	var texture = ImageTexture.create_from_image(image)
-	get_surface_override_material(0).albedo_texture = texture
+	#get_surface_override_material(0).albedo_texture = texture
+	get_surface_override_material(0).set_shader_parameter("sprite", texture)
 
 func _on_area_3d_mouse_entered():
 	#print(self)
 	game_manager.hovering_card = self
-	match area: 
+	match area:
 		"hand", "shop", "baubles":
 			if !selected:
 				$AnimationPlayer.play("description_open")
@@ -209,10 +210,10 @@ func _on_area_3d_mouse_entered():
 
 func _on_area_3d_mouse_exited():
 	if game_manager.hovering_card == self:
-		match area: 
+		match area:
 			"hand", "shop", "baubles":
 				if !selected:
 					$AnimationPlayer.play("description_close")
 		game_manager.hovering_card = null
 
-	
+

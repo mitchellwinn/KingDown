@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://l4w04v37cfpu"]
+[gd_scene load_steps=31 format=3 uid="uid://l4w04v37cfpu"]
 
 [ext_resource type="Shader" path="res://scripts/shaders/card.gdshader" id="2_u80jd"]
 [ext_resource type="Script" path="res://scripts/card.gd" id="2_ujo4m"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://dj7scm6i4dnmk" path="res://sprites/buy_button.png" id="11_6uclo"]
 [ext_resource type="Script" path="res://scripts/button.gd" id="12_g2t6m"]
 [ext_resource type="FontFile" uid="uid://xttwmf7eew3a" path="res://slkscr.ttf" id="14_mmly2"]
+[ext_resource type="Script" path="res://scripts/SpotLight3D.gd" id="16_emi88"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_pky6t"]
 size = Vector2(0.72, 0.96)
@@ -570,6 +571,12 @@ visible = false
 sorting_offset = 1.0
 alpha_cut = 1
 texture_filter = 0
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.8278)
+light_color = Color(1, 0.317647, 0.317647, 1)
+spot_angle = 24.6828
+script = ExtResource("16_emi88")
 
 [connection signal="mouse_entered" from="Area3D" to="." method="_on_area_3d_mouse_entered"]
 [connection signal="mouse_exited" from="Area3D" to="." method="_on_area_3d_mouse_exited"]
