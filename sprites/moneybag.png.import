@@ -2,26 +2,26 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3k4okfept350"
-path="res://.godot/imported/pawn_of_plenty.png-f984e71ae3ef39b244c8219c47e9b6b9.ctex"
+uid="uid://c1tonqbk5d1fe"
+path="res://.godot/imported/moneybag.png-05e24e2f251531fda61873a033241135.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/pawn_of_plenty.png"
-dest_files=["res://.godot/imported/pawn_of_plenty.png-f984e71ae3ef39b244c8219c47e9b6b9.ctex"]
+source_file="res://sprites/moneybag.png"
+dest_files=["res://.godot/imported/moneybag.png-05e24e2f251531fda61873a033241135.ctex"]
 
 [params]
 
-compress/mode=4
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
-compress/channel_pack=1
-mipmaps/generate=true
+compress/channel_pack=0
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

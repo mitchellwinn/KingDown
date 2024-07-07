@@ -19,6 +19,7 @@ var damage: int
 var hp: int
 var invulnerability := 0
 var light_mask = Directory.rng.randi_range(1, 20)
+var rarity = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,6 +28,18 @@ func _ready():
 	game_manager = Directory.game_manager
 	set_layer_mask(light_mask)
 	$SpotLight3D.set_layer_mask(light_mask)
+
+func update_rarity_effect(value):
+	match value:
+		0:
+			get_surface_override_material(0).set_shader_parameter("alpha_scalar",0)
+			$Unshaded.get_surface_override_material(0).set_shader_parameter("alpha_scalar",1)
+			$DescriptionWindow/Label.visible=false
+			
+		1:
+			get_surface_override_material(0).set_shader_parameter("alpha_scalar",1)
+			$Unshaded.get_surface_override_material(0).set_shader_parameter("alpha_scalar",0)
+			$DescriptionWindow/Label.visible=true
 
 # Called when the node enters the scene tree for the first time.
 func initialize():
@@ -42,8 +55,15 @@ func initialize():
 	$DescriptionWindow/Name.text = display
 	$DescriptionWindow/Description.text = description
 	uid = Directory.rng.randi_range(-99999,99999)
+	if !enemy:
+		if Directory.rng.randi_range(1,10) <=5:
+			rarity = 1
+		else:
+			rarity = 0
+	update_rarity_effect(rarity)
 	$StateMachine.initialize()
-
+	$CardRotator.seek(Directory.rng.randf_range(0.0,1.0))
+		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if !game_manager:
@@ -120,9 +140,12 @@ func change_area(new_area):
 	#$AnimationPlayer.play("description_close")
 	match new_area:
 		"deck":
+			$CardRotator.seek(0)
+			$CardRotator.stop()
 			area = new_area
 			in_play = false
 			change_sprite("card_back")
+			$Shadow.visible = false
 			if is_inside_tree():
 				if $DescriptionWindow.scale.y>0.5:
 					$AnimationPlayer.play("description_close")
@@ -132,9 +155,14 @@ func change_area(new_area):
 			else:
 				Directory.game_manager.deck.add_child(self)
 				global_position = Directory.game_manager.deck.global_position
+			await get_tree().physics_frame
+			update_rarity_effect(0)
 		"graveyard":
+			$CardRotator.stop()
 			area = new_area
 			in_play = false
+			$Shadow.visible = false
+			update_rarity_effect(0)
 			change_sprite("card_back")
 			#$SpotLight3D.light_energy = 0
 			if is_inside_tree():
@@ -152,7 +180,11 @@ func change_area(new_area):
 				in_play = false
 				Directory.game_manager.live_pieces.erase(self)
 			if old_area == "deck":
+				$CardRotator.play("rotate")
+				$CardRotator.seek(Directory.rng.randf_range(0.0,10.0))
 				#$SpotLight3D.light_energy = 1.0
+				$Shadow.visible = true
+				update_rarity_effect(rarity)
 				change_sprite(identifying_name)
 			reparent(Directory.game_manager.hand)
 
@@ -160,6 +192,8 @@ func change_area(new_area):
 			selected = false
 			if $DescriptionWindow.scale.y>0.5:
 					$AnimationPlayer.play("description_close")
+			$CardRotator.play("rotate")
+			$CardRotator.seek(Directory.rng.randf_range(0.0,10.0))
 			Directory.play_sound("res://audio/sfx/cardflick/"+str(Directory.rng.randi_range(1,8))+".mp3",0,1.15,0.05,1)
 			area = new_area
 			reparent(Directory.game_manager.baubles)
@@ -176,6 +210,7 @@ func change_area(new_area):
 				elif area == "deck":
 					area = new_area
 					#$SpotLight3D.light_energy = 1
+					update_rarity_effect(rarity)
 					change_sprite(identifying_name)
 					reparent(Directory.game_manager.board.get_node(Directory.game_manager.active_tile.get_parent().name.substr(0,2)))
 					Directory.game_manager.live_pieces.append(self)
@@ -188,22 +223,34 @@ func change_area(new_area):
 				print(get_parent())
 				in_play = true
 				Directory.game_manager.live_pieces.append(self)
+				$Shadow.visible = true
+				update_rarity_effect(rarity)
 				change_sprite(identifying_name)
 				rotation = Vector3(0,0,deg_to_rad(0))
 		"shop":
+			update_rarity_effect(rarity)
 			change_sprite(identifying_name)
+			$CardRotator.play("rotate")
+			$CardRotator.seek(Directory.rng.randf_range(0.0,10.0))
 			area = new_area
 	Directory.game_manager.arrange_board.call_deferred()
 	#game_manager.arrange_hand.call_deferred()
 	Directory.game_manager.arrange_deck.call_deferred()
 	Directory.game_manager.arrange_graveyard.call_deferred()
 	Directory.game_manager.arrange_baubles.call_deferred()
+	if area=="deck" or area=="graveyard":
+		await get_tree().create_timer(1).timeout
+		if area=="deck" or area=="graveyard":
+			$CardRotator.seek(0)
+			$CardRotator.stop()
+		
 
 func change_sprite(sprite):
 	var image = Image.load_from_file("res://sprites/"+sprite+".png")
 	var texture = ImageTexture.create_from_image(image)
 	#get_surface_override_material(0).albedo_texture = texture
 	get_surface_override_material(0).set_shader_parameter("sprite", texture)
+	$Unshaded.get_surface_override_material(0).set_shader_parameter("sprite", texture)
 
 func _on_area_3d_mouse_entered():
 	#print(self)

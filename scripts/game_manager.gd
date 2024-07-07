@@ -37,6 +37,7 @@ var piece_levels: Dictionary
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$DirectionalLight3D/AnimationPlayer.play("rotate")
 	Directory.game_manager = self
 	piece_levels["pawn"]=1
 	piece_levels["knight"]=1
@@ -265,7 +266,8 @@ func commencement(enemy: bool):
 	var live_pieces_this_turn = live_pieces.duplicate()
 	consecutive_attacks = 0
 	for card in live_pieces_this_turn:
-		card.in_play = true
+		if card.area=="field":
+			card.in_play = true
 		mult = 1
 		reset_combo_counter()
 		if card.enemy != enemy:
@@ -372,9 +374,9 @@ func arrange_baubles():
 	#reversed_deck.reverse()
 	for card in baubles.get_children():
 		if i<3:
-			card.target_position = baubles.global_position+Vector3(-.25,1*i,.1*i-20)
+			card.target_position = baubles.global_position+Vector3(-.25,1*i,.1*i-104)
 		else:
-			card.target_position = baubles.global_position+Vector3(.75,1*(i-3),.1*i-20)
+			card.target_position = baubles.global_position+Vector3(.75,1*(i-3),.1*i-104)
 		i+=1
 
 func arrange_graveyard():
@@ -385,16 +387,16 @@ func arrange_graveyard():
 
 func arrange_hand():
 	var i = 0
-	hand_target_position = Vector3(-.8/2.0*(float(hand.get_child_count()-1)-float(clamp(hand.get_child_count()-1,0,8))/1/5.75),-3.25,3)
+	hand_target_position = Vector3(-.8/2.0*(float(hand.get_child_count()-1)-float(clamp(hand.get_child_count()-1,0,8))/1/5.75),-3.25,-50)
 	for card in hand.get_children():
 		if card.selected:
-			card.target_position = hand_target_position+Vector3(.8*i-float(clamp(hand.get_child_count()-1,0,8))/1/14.0,.15,-.01*i)
+			card.target_position = hand_target_position+Vector3(.8*i-float(clamp(hand.get_child_count()-1,0,8))/1/14.0,.15,-.66*i)
 		elif hovering_card == null:
-			card.target_position = hand_target_position+Vector3(.8*i-float(clamp(hand.get_child_count()-1,0,8))/1/14.0,0,-.01*i)
+			card.target_position = hand_target_position+Vector3(.8*i-float(clamp(hand.get_child_count()-1,0,8))/1/14.0,0,-.66*i)
 		elif hovering_card == card:
-			card.target_position = hand_target_position+Vector3(.8*i-float(clamp(hand.get_child_count()-1,0,8))/1/14.0,.1,-.01*i)
+			card.target_position = hand_target_position+Vector3(.8*i-float(clamp(hand.get_child_count()-1,0,8))/1/14.0,.1,-.66*i)
 		elif hovering_card != card:
-			card.target_position = hand_target_position+Vector3(.8*i-float(clamp(hand.get_child_count()-1,0,8))/1/14.0,0,-.01*i)
+			card.target_position = hand_target_position+Vector3(.8*i-float(clamp(hand.get_child_count()-1,0,8))/1/14.0,0,-.66*i)
 		i+=1
 
 func arrange_shop():

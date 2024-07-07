@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://cop2ipmm6w4ay"]
+
+[ext_resource type="Shader" path="res://scripts/shaders/card_unshaded.gdshader" id="1_5pxdi"]
+[ext_resource type="Texture2D" uid="uid://b4h3bv45q5gms" path="res://sprites/card_alpha.png" id="2_j8428"]
+[ext_resource type="Texture2D" uid="uid://3k4okfept350" path="res://sprites/pawn_of_plenty.png" id="3_aiqaq"]
+
+[resource]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_5pxdi")
+shader_parameter/sprite = ExtResource("3_aiqaq")
+shader_parameter/alpha = ExtResource("2_j8428")

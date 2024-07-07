@@ -69,7 +69,11 @@ func _add_to_mult(amount):
 		print("[ABILITY]add_to_mult("+str(amount)+")")
 		await get_tree().create_timer(.40).timeout
 		Directory.game_manager.card_effect_resolving = false
-		
+func _chromatic():
+	if !card.in_play and card.area!="baubles":
+		return
+	var amount = 5
+	_add_to_mult(amount)	
 func _stim_pill():
 	var amount = clamp(0,5,(11-Directory.game_manager.turn)/2)
 	_add_to_mult(amount)
@@ -130,6 +134,11 @@ func _level_up_piece(piece):
 		Directory.game_manager.card_effect_resolving = false
 
 func connect_signals():
+	#rarity proc effects
+	match card.rarity:
+		1:
+			Directory.game_manager.damage_step.connect(_chromatic)
+			
 	#piece proc effects
 	match card.archetype:
 		"blue":

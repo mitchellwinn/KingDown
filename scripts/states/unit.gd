@@ -433,4 +433,8 @@ func has_horizontal_attack():
 	return false
 
 func abort_move():
-	return false
+	for piece in defending_pieces:
+		if piece.get_node("StateMachine").state.moved and piece.get_tile():
+			if piece.get_tile().safe>=0:
+				return true
+		
