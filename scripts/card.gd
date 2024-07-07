@@ -257,7 +257,7 @@ func _on_area_3d_mouse_entered():
 	game_manager.hovering_card = self
 	match area:
 		"hand", "shop", "baubles":
-			if !selected:
+			if true:
 				$AnimationPlayer.play("description_open")
 				Directory.play_sound("res://audio/hover.wav",-7,.75,0.1,1)
 
@@ -266,8 +266,7 @@ func _on_area_3d_mouse_exited():
 	if game_manager.hovering_card == self:
 		match area:
 			"hand", "shop", "baubles":
-				if !selected:
-					$AnimationPlayer.play("description_close")
+				$AnimationPlayer.play("description_close")
 		game_manager.hovering_card = null
 
 
