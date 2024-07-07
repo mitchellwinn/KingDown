@@ -81,7 +81,8 @@ func _teamwork():
 	var amount = Directory.game_manager.consecutive_attacks*3
 	_add_to_mult(amount)
 ##############################################
-func _evade_attack(victim):
+func _evade_attack():
+	var victim = Directory.game_manager.boss.attack_target
 	if !victim:
 		return
 	if Directory.rng.randi_range(1,100)<Directory.game_manager.piece_levels[victim.piece]*20:
@@ -156,7 +157,7 @@ func connect_signals():
 		"excalibur":
 			Directory.game_manager.pawn_promoted.connect(_level_up_piece.bind("knight"))
 		"cursed_cloth":
-			Directory.game_manager.damage_step_enemy.connect(_evade_attack.bind(Directory.game_manager.boss.get_node("StateMachine").state.attack_target))
+			Directory.game_manager.damage_step_enemy.connect(_evade_attack)
 func enter(_msg := {}) -> void:
 	state_machine = get_parent()
 	Directory.game_manager.reset_moves.connect(_reset_moves)
