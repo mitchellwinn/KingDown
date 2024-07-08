@@ -16,6 +16,7 @@ var hand_target_position: Vector3
 @export var graveyard: Node3D
 @export var commence: Node3D
 var hovering_card
+var last_hovered_card
 var hovering_button
 var active_tile
 var board_card_count_player:= 0
@@ -251,7 +252,7 @@ func stage_attack(card):
 		damage_step.emit()
 	await get_tree().create_timer(.35).timeout
 	while(card_effect_resolving):
-		await get_tree().create_timer(.35).timeout
+		await get_tree().create_timer(.55).timeout
 	attacking = true
 	arrange_camera()
 	await card.get_node("StateMachine").state.attack(card.get_node("StateMachine").state.attack_target)
@@ -295,6 +296,8 @@ func commencement(enemy: bool):
 			change_phase("win")
 			return
 	arrange_minimap()
+	while card_effect_resolving:
+		await get_tree().physics_frame
 	if enemy:
 		await reset_safe_tiles()
 		await set_safe_tiles()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://dgtilhxu443bf"]
+[gd_scene load_steps=45 format=3 uid="uid://dgtilhxu443bf"]
 
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_bnyea"]
 [ext_resource type="Texture2D" uid="uid://cysfd60opdwam" path="res://sprites/mini_grid2.png" id="2_s7vf0"]
@@ -14,6 +14,7 @@
 [ext_resource type="FontFile" uid="uid://y8v8ttnxc0ms" path="res://alagard.ttf" id="10_m0r2d"]
 [ext_resource type="Texture2D" uid="uid://dqotrwt2qai7j" path="res://sprites/shop_table.png" id="12_fqud3"]
 [ext_resource type="Texture2D" uid="uid://cmry23fl38ktn" path="res://sprites/commence_outline1.png" id="12_llrtw"]
+[ext_resource type="Texture2D" uid="uid://dc5ybd2iir0mq" path="res://sprites/gp.png" id="13_0qbd2"]
 [ext_resource type="Texture2D" uid="uid://tf4avm7py5sm" path="res://sprites/next_round_button.png" id="14_pujt3"]
 [ext_resource type="Shader" path="res://scripts/shaders/Benji_Screen_Space_Camera_Ripple .gdshader" id="15_euld0"]
 
@@ -511,7 +512,7 @@ fov = 84.0
 size = 5.4
 
 [node name="Minimap" type="Sprite3D" parent="Camera3D"]
-transform = Transform3D(-0.96, 0, -1.44956e-07, 0, 0.96, 0, 1.44956e-07, 0, -0.96, -6, 2, -4)
+transform = Transform3D(-0.96, 0, -1.44956e-07, 0, 0.96, 0, 1.44956e-07, 0, -0.96, -3.31, 2, -4)
 alpha_cut = 1
 texture_filter = 0
 texture = ExtResource("2_s7vf0")
@@ -717,7 +718,7 @@ texture_filter = 5
 texture = ExtResource("2_s7vf0")
 
 [node name="Sideboard" type="Sprite3D" parent="Camera3D"]
-transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -7.865, 1.5, -4)
+transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -4.46, 1.5, -4)
 double_sided = false
 alpha_cut = 1
 alpha_scissor_threshold = 0.629
@@ -932,7 +933,7 @@ texture_filter = 0
 texture = SubResource("ViewportTexture_bajny")
 
 [node name="board" type="Node3D" parent="."]
-transform = Transform3D(-1, 1.50996e-07, 1.74846e-07, -1.50996e-07, -1, 7.64279e-15, 1.74846e-07, -1.87582e-14, 1, -2, 3, -89.273)
+transform = Transform3D(-1, 1.50996e-07, 1.74846e-07, -1.50996e-07, -1, 7.64279e-15, 1.74846e-07, -1.87582e-14, 1, -2.00002, -2, -89.2726)
 
 [node name="a1" type="MeshInstance3D" parent="board"]
 transform = Transform3D(1, 1.74846e-07, -1.7683e-07, -1.74846e-07, 1, -2.76886e-16, 1.7683e-07, 3.09179e-14, 1, 0, 0, 0)
@@ -1547,7 +1548,7 @@ texture = ExtResource("8_ifavb")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.2, -45.5694)
 
 [node name="Commence" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, -104)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.25, -104)
 modulate = Color(0.509804, 0.509804, 0.509804, 1)
 alpha_cut = 1
 texture_filter = 0
@@ -1578,6 +1579,11 @@ libraries = {
 "": SubResource("AnimationLibrary_tx32m")
 }
 speed_scale = 18.0
+
+[node name="GP" type="Sprite3D" parent="."]
+transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -3.5, -4.25, 0.023)
+texture_filter = 0
+texture = ExtResource("13_0qbd2")
 
 [node name="GoldLabel" type="Label3D" parent="."]
 transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, -3.784, -4.34, 0.023)

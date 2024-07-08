@@ -54,6 +54,7 @@ func initialize():
 	damage = card_list[identifying_name]["damage"]
 	$DescriptionWindow/Name.text = display
 	$DescriptionWindow/Description.text = description
+	$DescriptionWindow/MoneyBag/Amount.text = str(cost)
 	uid = Directory.rng.randi_range(-99999,99999)
 	if !enemy:
 		if Directory.rng.randi_range(1,10) <=5:
@@ -80,6 +81,8 @@ func _process(delta):
 			path.progress+=delta*(1+i)
 		if Input.is_action_just_pressed("select") and game_manager.active_tile:
 			play_card()
+		elif Input.is_action_just_pressed("deselect"):
+			deselect()
 	else:
 		$SelectOutline.visible = false
 
@@ -254,19 +257,51 @@ func change_sprite(sprite):
 
 func _on_area_3d_mouse_entered():
 	#print(self)
+	if Directory.game_manager.card_effect_resolving:
+		return
+	if Directory.game_manager.last_hovered_card!=self:
+		if Directory.game_manager.last_hovered_card!=null:
+			Directory.game_manager.last_hovered_card.get_node("AnimationPlayer").play("description_close")
+			match Directory.game_manager.last_hovered_card.area:
+				"shop":
+					Directory.game_manager.last_hovered_card.selected = false
+					Directory.game_manager.arrange_shop()
 	game_manager.hovering_card = self
 	match area:
-		"hand", "shop", "baubles":
+		"hand", "baubles":
 			if true:
 				$AnimationPlayer.play("description_open")
 				Directory.play_sound("res://audio/hover.wav",-7,.75,0.1,1)
+		"shop":
+			$AnimationPlayer.play("description_open_shop")
+			Directory.play_sound("res://audio/hover.wav",-7,.75,0.1,1)
 
 
 func _on_area_3d_mouse_exited():
 	if game_manager.hovering_card == self:
 		match area:
-			"hand", "shop", "baubles":
+			"hand", "baubles":
 				$AnimationPlayer.play("description_close")
+				
+				
+		game_manager.last_hovered_card = self
 		game_manager.hovering_card = null
-
-
+	
+func deselect():
+	if game_manager.hovering_card == self:
+		match area:
+			"hand", "baubles":
+				if !selected:
+					$AnimationPlayer.play("description_close")
+				
+				
+		game_manager.last_hovered_card = self
+		game_manager.hovering_card = null
+		if selected:
+			selected = false
+			game_manager.hovering_card = self
+			Directory.game_manager.arrange_shop()
+	else:
+		selected = false
+		game_manager.hovering_card = null
+		Directory.game_manager.arrange_shop()

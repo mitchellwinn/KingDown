@@ -8,5 +8,6 @@
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("1_5pxdi")
+shader_parameter/alpha_scalar = 1.0
 shader_parameter/sprite = ExtResource("3_aiqaq")
 shader_parameter/alpha = ExtResource("2_j8428")

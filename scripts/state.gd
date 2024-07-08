@@ -82,7 +82,7 @@ func _teamwork():
 	_add_to_mult(amount)
 ##############################################
 func _evade_attack():
-	var victim = Directory.game_manager.boss.attack_target
+	var victim = Directory.game_manager.boss.get_node("StateMachine").state.attack_target
 	if !victim:
 		return
 	if Directory.rng.randi_range(1,100)<Directory.game_manager.piece_levels[victim.piece]*20:
